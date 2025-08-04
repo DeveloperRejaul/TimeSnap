@@ -1,64 +1,48 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
+import { listen, UnlistenFn } from '@tauri-apps/api/event';
 import "./App.css";
 
+let listener: UnlistenFn
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
 
   useEffect(()=>{
-   
-        async function captureScreenshot() {
-          try {
-            // Call the Rust command
-            const path:string = await invoke('take_screenshot');
-            setGreetMsg(path)
-            console.log('Screenshot saved at:', path);
-            alert(`Screenshot saved at: ${path}`);
-          } catch (error) {
-            console.error('Failed to take screenshot:', error);
-          }
-        }
-
-      setInterval(()=>{
-        captureScreenshot();
-      }, 10000)
-  
+    const init = async () => {
+     listener = await listen<string>("MY_EVENT", (data)=>{
+        setGreetMsg(data.payload)
+      })
+    }
+    init()
+   return ()=>{
+    listener?.()
+   }
   },[])
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet2", { name }));
+
+  async function monitor() {
+    try {
+      // const res =  await invoke<string>("greet", {name})
+      const res =  await invoke<string>("monitor_activity")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function screenshot() {
+    try {
+      await invoke("screenshot")
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri</h1>
-
-      <div className="row">
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
+      <button type="button" onClick={monitor}>Start Monitoring</button>
+      <button type="button" onClick={screenshot}>Take screenshot</button>
       <p>{greetMsg}</p>
     </main>
   );
