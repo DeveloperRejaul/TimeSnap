@@ -1,0 +1,2 @@
+
+A lightweight monitoring tool built with Tauri and Rust that captures employee device activity. It automatically takes a screenshot every 10 seconds and tracks keyboard, mouse, and monitor usage to help ensure productivity and transparency in remote or in-office environments.
