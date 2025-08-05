@@ -9,13 +9,7 @@ function App() {
   const [images, setImages] = useState<string[]>([])
 
   useEffect(()=>{
-     unlisten = listen<string>("MY_EVENT", (data)=>{
-        setGreetMsg(data.payload)
-      })
-  
-   return ()=>{
-    unlisten.then((f) => f());
-   }
+   monitor()
   },[])
 
 
@@ -36,12 +30,17 @@ function App() {
     }
   }
 
+  const listenActivity =() => {
+     unlisten = listen<string>("MY_EVENT", (data)=>{
+        setGreetMsg(data.payload)
+      })
+  }
 
 
   return (
     <main className="container">
-      <button type="button" onClick={monitor}>Start Monitoring</button>
-      <button type="button" onClick={()=> unlisten.then((f) => f())}>Off Monitoring</button>
+      <button type="button" onClick={listenActivity}>Start Monitoring</button>
+      <button type="button" onClick={()=>unlisten?.then(fn => fn?.())}>Off Monitoring</button>
       <button type="button" onClick={getScreenshot}>Take screenshot</button>
       <p>{greetMsg}</p>
       <div className="screenshot-grid">
