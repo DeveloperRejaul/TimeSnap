@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
+import Login from "./src/features/auth/Login";
 
 
 let unlisten: Promise<UnlistenFn>
@@ -50,18 +51,8 @@ function App() {
 
 
   return (
-    <main>
-      <button type="button" className="bg-red-500" onClick={listenActivity}>Start Monitoring</button>
-      <button type="button" onClick={()=>unlisten?.then(fn => fn?.())}>Off Monitoring</button>
-      <button type="button" onClick={getScreenshot}>Take screenshot</button>
-      <p>{greetMsg}</p>
-      <div>
-        {images.map((src, idx) => (
-          <div key={idx}>
-            <img src={src} alt={`Screenshot ${idx + 1}`} />
-          </div>
-        ))}
-      </div>
+    <main class="bg-background h-[100vh] w-[100vw] flex flex-1">
+      <Login/>
     </main>
   );
 }
