@@ -25,8 +25,7 @@ async fn get_screenshot () -> Result<Vec<String>, String>{
 
         // Convert image to PNG bytes in memory
         let mut buf = Cursor::new(Vec::new());
-        image.write_to(&mut buf, ImageFormat::Png)
-            .map_err(|e| e.to_string())?;
+        image.write_to(&mut buf, ImageFormat::Png).map_err(|e| e.to_string())?;
 
         // Encode to base64
         let encoded = general_purpose::STANDARD.encode(buf.get_ref());
