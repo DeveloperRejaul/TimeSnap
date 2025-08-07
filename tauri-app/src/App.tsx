@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import Login from "./src/features/auth/Login";
+import type { UnlistenFn } from '@tauri-apps/api/event';
+import { listen } from '@tauri-apps/api/event';
+import Login from "./features/auth/Login";
+import Setup from "./features/setup/Setup";
+import Header from "./core/components/Header";
 
 
 let unlisten: Promise<UnlistenFn>
@@ -12,7 +15,7 @@ function App() {
   const [images, setImages] = useState<string[]>([])
 
   useEffect(()=>{
-   monitor()
+    monitor()
   },[])
 
 
@@ -26,18 +29,18 @@ function App() {
 
   async function getScreenshot() {
     try {
-     const images = await invoke<string[]>("get_screenshot")
-     setImages(pre=> [...pre,...images])
+      const images = await invoke<string[]>("get_screenshot")
+      setImages(pre=> [...pre,...images])
     } catch (error) {
       console.log(error);
     }
   }
 
   const listenActivity =() => {
-     unlisten = listen<string>("MY_EVENT", (data)=>{
-        setGreetMsg(data.payload)
-        date = new Date()
-      })
+    unlisten = listen<string>("MY_EVENT", (data)=>{
+      setGreetMsg(data.payload)
+      date = new Date()
+    })
   }
 
   const getActiveMonitor = (min = MIN ):"Inactive" | "Active" => {
@@ -51,8 +54,9 @@ function App() {
 
 
   return (
-    <main class="bg-background h-[100vh] w-[100vw] flex flex-1">
-      <Login/>
+    <main class="bg-background h-[100vh] w-[100vw] flex flex-1 flex-col overflow-hidden rounded-md shadow-2xl">
+      <Header/>
+      <Setup/>
     </main>
   );
 }

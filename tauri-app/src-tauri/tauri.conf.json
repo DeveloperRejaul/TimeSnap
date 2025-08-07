@@ -14,12 +14,18 @@
       {
         "title": "tauri-app",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "decorations": false, 
+        "transparent": true,
+        "shadow": true,
+        "minWidth": 400,
+        "minHeight": 600
       }
     ],
     "security": {
       "csp": null
-    }
+    },
+    "macOSPrivateApi": true
   },
   "bundle": {
     "active": true,
