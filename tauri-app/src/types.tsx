@@ -1,4 +1,9 @@
-export interface IInputProps  extends Partial<HTMLInputElement>{}
+
+
+export interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  register?:any
+}
 
 export interface IconProps {
     size?:number;
@@ -15,4 +20,8 @@ export interface IButtonProps {
     type?: 'button' | 'submit' | 'reset';
     variant?: 'primary' | 'secondary' | 'danger';
     size?: 'sm' | 'md' | 'lg';
+}
+
+export interface ISetupFormTypes {
+  baseUrl:string
 }

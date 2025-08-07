@@ -9,11 +9,12 @@ export const router = createBrowserRouter([
     Component: App,
     children:[
       {
+        index: true,
         path: "/",
         Component: Setup,
       },
       {
-        path: "/login",
+        path: "login",
         Component: Login,
       },
     ]

@@ -5,6 +5,7 @@ import { listen } from '@tauri-apps/api/event';
 import Login from "./features/auth/Login";
 import Setup from "./features/setup/Setup";
 import Header from "./core/components/Header";
+import { Outlet } from "react-router";
 
 
 let unlisten: Promise<UnlistenFn>
@@ -56,7 +57,7 @@ function App() {
   return (
     <main class="bg-background h-[100vh] w-[100vw] flex flex-1 flex-col overflow-hidden rounded-md shadow-2xl">
       <Header/>
-      <Setup/>
+      <Outlet/>
     </main>
   );
 }
