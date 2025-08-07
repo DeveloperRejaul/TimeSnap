@@ -1,0 +1,1 @@
+auto reloading server start command : watchexec -w src -r cargo run

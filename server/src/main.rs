@@ -8,6 +8,16 @@ async fn root() -> actix_web::Result<NamedFile> {
      Ok(NamedFile::open("static/index.html")?)
 }
 
+#[get("/auth/forgotpass")]
+async fn forgotpass() -> actix_web::Result<NamedFile> {
+     Ok(NamedFile::open("static/index.html")?)
+}
+
+#[get("/auth/signup")]
+async fn signup() -> actix_web::Result<NamedFile> {
+     Ok(NamedFile::open("static/index.html")?)
+}
+
 
 
 #[actix_web::main]
@@ -15,6 +25,8 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(root)
+            .service(forgotpass)
+            .service(signup)
             .service(fs::Files::new("/static", ".").show_files_listing())
             .configure(routes::routes)
     })
