@@ -4,6 +4,7 @@ import Minus from "../icons/Minus";
 import Minimize from "../icons/Minimize";
 import Maximize from "../icons/Maximize";
 import { useState } from "react";
+import Setting from "../icons/Setting";
 
 export default function Header() {
   const appWindow = getCurrentWindow();
@@ -12,7 +13,7 @@ export default function Header() {
 
   return (
     <div
-      class="w-full h-10 flex"
+      class="w-full h-10 flex items-center justify-between"
       data-tauri-drag-region
     >
       <div class="flex gap-x-1 p-2">
@@ -34,6 +35,9 @@ export default function Header() {
           }}> 
           {isMaximize ? <Maximize class="h-3 w-3 opacity-0 rotate-45 group-hover:opacity-100 transition-opacity duration-200 fill-text-muted"/> :<Minimize class="h-w w-3 opacity-0 rotate-45 group-hover:opacity-100 transition-opacity duration-200 fill-text-muted"/>}
         </div>
+      </div>
+      <div class="pr-3 cursor-pointer">
+        <Setting class="h-4 w-4 fill-text-muted"/>
       </div>
     </div>
   )

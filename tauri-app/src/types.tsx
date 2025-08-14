@@ -3,6 +3,7 @@
 export interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   register?:any
+  error?:string
 }
 
 export interface IconProps {
@@ -24,4 +25,9 @@ export interface IButtonProps {
 
 export interface ISetupFormTypes {
   baseUrl:string
+}
+export interface ISignupFormTypes {
+  email:string
+  password:string
+  remember:boolean
 }
