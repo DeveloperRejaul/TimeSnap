@@ -112,23 +112,12 @@ jobs:
           cd tauri-app
           npm ci
 
-      - name: Collect commit messages
-        id: changelog
-        shell: bash
+      - name: 📝 Get full last commit message (with markdown)
+        id: release_notes
         run: |
-          TAG="v${{ steps.meta.outputs.version }}"
-          # Get the last tag (ignore errors if none)
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-
-          if [ -n "$LAST_TAG" ]; then
-            LOG=$(git log ${LAST_TAG}..origin/main --merges --first-parent --pretty=format:"- %s")
-          else
-            LOG=$(git log origin/main --merges --first-parent --pretty=format:"- %s")
-          fi
-
-          echo "log<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$LOG" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          git log -1 --pretty=format:%B >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
@@ -145,7 +134,7 @@ jobs:
             Installers for macOS, Linux, and Windows are attached below.
 
             ### Changes in this release
-            ${{ steps.changelog.outputs.log }}
+            ${{ env.RELEASE_NOTES }}
           releaseDraft: false
           prerelease: ${{ contains(steps.meta.outputs.version, '-alpha') || contains(steps.meta.outputs.version, '-beta') || contains(steps.meta.outputs.version, '-rc') }}
           args: ${{ matrix.args }}
