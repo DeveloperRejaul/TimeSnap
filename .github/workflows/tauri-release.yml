@@ -82,8 +82,9 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
-            libsystemd-dev \
-            libseat-dev
+            libpipewire-0.3-dev \
+            libxkbcommon-dev \
+            libsqlite3-dev \
 
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
