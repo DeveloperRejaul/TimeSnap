@@ -81,7 +81,8 @@ jobs:
             libxdo-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
-            librsvg2-dev
+            librsvg2-dev \
+            libpipewire-0.3-dev
             
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
