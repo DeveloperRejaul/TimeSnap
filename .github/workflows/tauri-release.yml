@@ -4,89 +4,84 @@ on:
   push:
     branches:
       - main
-  permissions:
-    contents: write
-  concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: true
-jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: macos-latest
-            args: "--target aarch64-apple-darwin"
-          - platform: macos-latest
-            args: "--target x86_64-apple-darwin"
-          - platform: ubuntu-22.04
-            args: ""
-          - platform: windows-latest
-            args: ""
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # helpful if you later decide to auto-create or update tags
-          fetch-depth: 0
-      - name: Setup Node.js (LTS)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: "npm"
-          cache-dependency-path: |
-            tauri-app/pnpm-lock.yaml
-            tauri-app/yarn.lock
-            tauri-app/package-lock.json
-      - name: Install Rust (stable)
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-      # Linux-only: system deps for Tauri
-      - name: Install Linux build deps
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev \
-            libappindicator3-dev librsvg2-dev patchelf
-      # Install frontend deps inside tauri-app/
-      - name: Use pnpm if present
-        if: hashFiles('tauri-app/pnpm-lock.yaml') != ''
-        run: |
-          corepack enable
-          cd tauri-app
-          pnpm i --frozen-lockfile
-      - name: Use yarn if present
-        if: hashFiles('tauri-app/yarn.lock') != '' && hashFiles('tauri-app/pnpm-lock.yaml') == ''
-        run: |
-          corepack enable
-          cd tauri-app
-          yarn install --frozen-lockfile
-      - name: Use npm otherwise
-        if: hashFiles('tauri-app/pnpm-lock.yaml') == '' && hashFiles('tauri-app/yarn.lock') == ''
-        run: |
-          cd tauri-app
-          npm ci
-      - name: Build & upload to GitHub Release
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectPath: tauri-app
+  jobs:
+    build:
+      strategy:
+        fail-fast: false
+        matrix:
+          include:
+            - platform: macos-latest
+              args: "--target aarch64-apple-darwin"
+            - platform: macos-latest
+              args: "--target x86_64-apple-darwin"
+            - platform: ubuntu-22.04
+              args: ""
+            - platform: windows-latest
+              args: ""
+      runs-on: ${{ matrix.platform }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            # helpful if you later decide to auto-create or update tags
+            fetch-depth: 0
+        - name: Setup Node.js (LTS)
+          uses: actions/setup-node@v4
+          with:
+            node-version: "lts/*"
+            cache: "npm"
+            cache-dependency-path: |
+              tauri-app/pnpm-lock.yaml
+              tauri-app/yarn.lock
+              tauri-app/package-lock.json
+        - name: Install Rust (stable)
+          uses: dtolnay/rust-toolchain@stable
+          with:
+            targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+        # Linux-only: system deps for Tauri
+        - name: Install Linux build deps
+          if: matrix.platform == 'ubuntu-22.04'
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev \
+              libappindicator3-dev librsvg2-dev patchelf
+        # Install frontend deps inside tauri-app/
+        - name: Use pnpm if present
+          if: hashFiles('tauri-app/pnpm-lock.yaml') != ''
+          run: |
+            corepack enable
+            cd tauri-app
+            pnpm i --frozen-lockfile
+        - name: Use yarn if present
+          if: hashFiles('tauri-app/yarn.lock') != '' && hashFiles('tauri-app/pnpm-lock.yaml') == ''
+          run: |
+            corepack enable
+            cd tauri-app
+            yarn install --frozen-lockfile
+        - name: Use npm otherwise
+          if: hashFiles('tauri-app/pnpm-lock.yaml') == '' && hashFiles('tauri-app/yarn.lock') == ''
+          run: |
+            cd tauri-app
+            npm ci
+        - name: Build & upload to GitHub Release
+          uses: tauri-apps/tauri-action@v0
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            projectPath: tauri-app
 
-          # ⬇️ Pull version from tauri-app/package.json (or tauri.conf)
-          # The action will CREATE the GitHub Release (and tag) if it doesn't exist.
-          tagName: v__VERSION__
-          releaseName: v__VERSION__
+            # ⬇️ Pull version from tauri-app/package.json (or tauri.conf)
+            # The action will CREATE the GitHub Release (and tag) if it doesn't exist.
+            tagName: v__VERSION__
+            releaseName: v__VERSION__
 
-          releaseBody: "Installers for macOS, Linux, and Windows are attached below."
-          releaseDraft: false
+            releaseBody: "Installers for macOS, Linux, and Windows are attached below."
+            releaseDraft: false
 
-          # mark prerelease automatically if version has -alpha/-beta/-rc
-          prerelease: ${{ contains(steps.version.outputs.version, '-alpha') || contains(steps.version.outputs.version, '-beta') || contains(steps.version.outputs.version, '-rc') }}
+            # mark prerelease automatically if version has -alpha/-beta/-rc
+            prerelease: ${{ contains(steps.version.outputs.version, '-alpha') || contains(steps.version.outputs.version, '-beta') || contains(steps.version.outputs.version, '-rc') }}
 
-          # Build args per-matrix (mac targets, etc.)
-          args: ${{ matrix.args }}
-      
+            # Build args per-matrix (mac targets, etc.)
+            args: ${{ matrix.args }}
+        
