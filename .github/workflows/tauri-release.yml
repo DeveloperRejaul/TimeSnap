@@ -132,25 +132,39 @@ jobs:
         if: steps.checktag.outputs.exists == 'true'
         run: echo "Tag v${{ steps.meta.outputs.version }} already exists. Skipping release upload."
 
-      - name: Prefix asset names by platform on the Release
-        if: steps.checktag.outputs.exists == 'false'
+  # Post-build job: rename assets on the Release in-place (no rebuild/download)
+  rename-assets:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout (read version)
+        uses: actions/checkout@v4
+
+      - name: Prefix asset names by platform on the GitHub Release
         uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs');
             const { owner, repo } = context.repo;
-            const tag = `v${{ steps.meta.outputs.version }}`;
 
-            // Get the Release created by the previous step
-            let release;
+            // Read version from project to locate the tag
+            const pkg = JSON.parse(fs.readFileSync('tauri-app/package.json', 'utf8'));
+            const tag = `v${pkg.version}`;
+
+            // Get the Release by tag
+            let rel;
             try {
-              release = (await github.rest.repos.getReleaseByTag({ owner, repo, tag })).data;
+              const { data } = await github.rest.repos.getReleaseByTag({ owner, repo, tag });
+              rel = data;
             } catch (e) {
-              core.warning(`Release ${tag} not found; skipping rename. ${e.message}`);
+              core.warning(`Release ${tag} not found; skipping rename.`);
               return;
             }
 
-            // Choose prefix from filename
-            const prefixFor = (name) => {
+            // Decide prefix from file extension
+            function prefixFor(name) {
               const n = name.toLowerCase();
               if (n.endsWith('.dmg') || n.endsWith('.pkg')) return 'mac';
               if (n.endsWith('.msi') || n.endsWith('.exe') || n.endsWith('.msix')) return 'windows';
@@ -159,12 +173,11 @@ jobs:
                 n.endsWith('.tar.gz')   || n.endsWith('.tar.xz') || n.endsWith('.tar.bz2')
               ) return 'linux';
               return null;
-            };
+            }
 
-            for (const asset of release.assets) {
+            for (const asset of rel.assets) {
               const orig = asset.name;
-              // avoid double-prefixing on re-runs
-              if (/^(mac|linux|windows)-/i.test(orig)) continue;
+              if (/^(mac|linux|windows)-/.test(orig)) continue; // already prefixed
 
               const prefix = prefixFor(orig);
               if (!prefix) continue;
@@ -175,5 +188,6 @@ jobs:
                 asset_id: asset.id,
                 name: newName
               });
-              core.info(`Renamed ${orig} → ${newName}`);
+              core.info(`Renamed: ${orig} → ${newName}`);
             }
+
