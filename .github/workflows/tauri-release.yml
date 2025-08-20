@@ -82,8 +82,9 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
-            libpipewire-0.3-dev
-            
+            libsystemd-dev \
+            libseat-dev
+
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
         if: hashFiles('tauri-app/pnpm-lock.yaml') != ''
