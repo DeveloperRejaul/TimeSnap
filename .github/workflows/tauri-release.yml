@@ -73,30 +73,16 @@ jobs:
           sudo apt-get update
           # core + gtk/glib/pipewire/etc.
           sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
             build-essential \
-            pkg-config \
-            libglib2.0-dev \
-            libgtk-3-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            libssl-dev \
-            libpipewire-0.3-dev \
-            libxdo-dev \
             curl \
             wget \
             file \
-            patchelf
-
-          # WebKitGTK: Tauri v2 needs 4.1; v1 uses 4.0 — try 4.1 then fall back to 4.0
-          if ! sudo apt-get install -y libwebkit2gtk-4.1-dev; then
-            sudo apt-get install -y libwebkit2gtk-4.0-dev
-          fi
-
-          # sanity checks (should print versions, not errors)
-          pkg-config --modversion glib-2.0
-          pkg-config --modversion webkit2gtk-4.1 || pkg-config --modversion webkit2gtk-4.0 || true
-
-
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+            
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
         if: hashFiles('tauri-app/pnpm-lock.yaml') != ''
