@@ -92,30 +92,8 @@ jobs:
           cd tauri-app
           npm ci
 
-      - name: macOS signing preflight
-        if: matrix.platform == 'macos-latest'
-        shell: bash
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-        run: |
-          set -euo pipefail
-          TMP=/tmp/cert.p12
-          # decode (try both BSD and GNU base64 flags)
-          (echo "$APPLE_CERTIFICATE" | base64 -D -o "$TMP") || (echo "$APPLE_CERTIFICATE" | base64 -d > "$TMP")
-          # create and unlock a throwaway keychain
-          security create-keychain -p "" build.keychain
-          security set-keychain-settings build.keychain
-          security list-keychains -d user -s build.keychain login.keychain
-          security unlock-keychain -p "" build.keychain
-          # import p12
-          security import "$TMP" -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
-          # show available signing identities (should list Developer ID Application)
-          security find-identity -v -p codesigning build.keychain
-
-
-      - name: Build & upload (Windows/Linux)
-        if: matrix.platform != 'macos-latest' && steps.checktag.outputs.exists == 'false'
+      - name: Build & upload to GitHub Release
+        if: steps.checktag.outputs.exists == 'false'
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -128,24 +106,6 @@ jobs:
           prerelease: ${{ contains(steps.meta.outputs.version, '-alpha') || contains(steps.meta.outputs.version, '-beta') || contains(steps.meta.outputs.version, '-rc') }}
           args: ${{ matrix.args }}
 
-
       - name: Build only (no release) because tag exists
         if: steps.checktag.outputs.exists == 'true'
         run: echo "Tag v${{ steps.meta.outputs.version }} already exists. Skipping release upload."
-
-
-
-      # - name: Build & upload to GitHub Release
-      #   if: steps.checktag.outputs.exists == 'false'
-      #   uses: tauri-apps/tauri-action@v0
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     projectPath: tauri-app
-      #     tagName: v${{ steps.meta.outputs.version }}
-      #     releaseName: v${{ steps.meta.outputs.version }}
-      #     releaseBody: "Installers for macOS, Linux, and Windows are attached below."
-      #     releaseDraft: false
-      #     prerelease: ${{ contains(steps.meta.outputs.version, '-alpha') || contains(steps.meta.outputs.version, '-beta') || contains(steps.meta.outputs.version, '-rc') }}
-      #     args: ${{ matrix.args }}
-      # replace your current "Build & upload..." step with this pair
