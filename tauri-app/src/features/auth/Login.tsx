@@ -1,6 +1,6 @@
 import Button from "@/core/components/Button";
 import Input from "@/core/components/Input";
-import Setting from "@/core/icons/Setting";
+// import Setting from "@/core/icons/Setting";
 import type { ISignupFormTypes } from "@/types";
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { useForm } from "react-hook-form";
@@ -15,24 +15,26 @@ export default function Login() {
   const handlesignup = async () => {
     try {
       await openUrl(`${state?.baseUrl}/auth/signup`  )
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // console.log(error);
     }
   }
   const handleForgotPass = async () => {
     try {
       await openUrl(`${state?.baseUrl}/auth/forgotpass`  )
-    } catch (error) {
-      console.log(error);
+    } catch  {
+      // console.log(error);
     }
   }
 
-  const handleLogin = async (data:ISignupFormTypes) => {
+  const handleLogin = async (
+  //  data:ISignupFormTypes
+  ) => {
     try {
-      console.log(data);
+      // console.log(data);
       navigate('/home')
-    } catch (error) {
-      console.log(error);
+    } catch  {
+      // console.log(error);
     }
   }
 
