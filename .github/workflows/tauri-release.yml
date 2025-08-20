@@ -85,9 +85,14 @@ jobs:
             libpipewire-0.3-dev \
             libxdo-dev \
             # rdev / X11 input
-            libx11-dev libxi-dev libxtst-dev \
+            libx11-dev \
+            libxi-dev \
+            libxtst-dev \
             # GPU / compositor stack used by wry/tao/webkit
-            libgbm-dev libdrm-dev libegl1-mesa-dev libwayland-dev
+            libgbm-dev \
+            libdrm-dev \
+            libegl1-mesa-dev \
+            libwayland-dev
    
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
