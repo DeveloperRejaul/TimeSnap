@@ -12,12 +12,12 @@ import { Outlet } from "react-router";
 // let date = new Date()
 // const MIN = 60 * 1000
 function App() {
-  // const [greetMsg, setGreetMsg] = useState("");
-  // const [images, setImages] = useState<string[]>([])
+  const [greetMsg, setGreetMsg] = useState("");
+  const [images, setImages] = useState<string[]>([])
 
-  // useEffect(()=>{
-  //   monitor()
-  // },[])
+  useEffect(()=>{
+    monitor()
+  },[])
 
 
   // async function monitor() {
