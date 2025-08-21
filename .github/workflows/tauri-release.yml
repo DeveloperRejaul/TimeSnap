@@ -114,12 +114,23 @@ jobs:
 
       - name: 📝 Get full last commit message (with markdown)
         run: |
-          commit_msg="$(git log -1 --pretty=%B)"
-          {
-            echo "RELEASE_NOTES<<EOF"
-            echo "$commit_msg"
-            echo "EOF"
-          } >> "$GITHUB_ENV"
+           # macOS/Linux (bash)
+            if [ "${{ matrix.shell }}" = "bash" ]; then
+              commit_msg="$(git log -1 --pretty=%B)"
+              {
+                echo "RELEASE_NOTES<<EOF"
+                echo "$commit_msg"
+                echo "EOF"
+              } >> "$GITHUB_ENV"
+            fi
+
+            # Windows (pwsh)
+            if [ "${{ matrix.shell }}" = "pwsh" ]; then
+              $commit_msg = git log -1 --pretty=%B
+              Add-Content -Path $env:GITHUB_ENV -Value "RELEASE_NOTES<<EOF"
+              Add-Content -Path $env:GITHUB_ENV -Value $commit_msg
+              Add-Content -Path $env:GITHUB_ENV -Value "EOF"
+            fi
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
