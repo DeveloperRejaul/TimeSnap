@@ -36,17 +36,17 @@ jobs:
           node-version: "lts/*"
           cache: "npm"
           cache-dependency-path: |
-            tauri-app/pnpm-lock.yaml
-            tauri-app/yarn.lock
-            tauri-app/package-lock.json
+            desktop/pnpm-lock.yaml
+            desktop/yarn.lock
+            desktop/package-lock.json
 
-      - name: Read version from tauri-app/package.json
+      - name: Read version from desktop/package.json
         id: meta
         shell: bash
         run: |
-          VER=$(node -p "require('./tauri-app/package.json').version || ''")
+          VER=$(node -p "require('./desktop/package.json').version || ''")
           if [ -z "$VER" ]; then
-            echo "No version found in tauri-app/package.json"; exit 1
+            echo "No version found in desktop/package.json"; exit 1
           fi
           echo "version=$VER" >> "$GITHUB_OUTPUT"
 
@@ -93,23 +93,23 @@ jobs:
             libxi-dev \
             libxtst-dev
 
-      # Install frontend deps inside tauri-app/
+      # Install frontend deps inside desktop/
       - name: Install deps (pnpm)
-        if: hashFiles('tauri-app/pnpm-lock.yaml') != ''
+        if: hashFiles('desktop/pnpm-lock.yaml') != ''
         run: |
           corepack enable
-          cd tauri-app
+          cd desktop
           pnpm i --frozen-lockfile
       - name: Install deps (yarn)
-        if: hashFiles('tauri-app/yarn.lock') != '' && hashFiles('tauri-app/pnpm-lock.yaml') == ''
+        if: hashFiles('desktop/yarn.lock') != '' && hashFiles('desktop/pnpm-lock.yaml') == ''
         run: |
           corepack enable
-          cd tauri-app
+          cd desktop
           yarn install --frozen-lockfile
       - name: Install deps (npm)
-        if: hashFiles('tauri-app/pnpm-lock.yaml') == '' && hashFiles('tauri-app/yarn.lock') == ''
+        if: hashFiles('desktop/pnpm-lock.yaml') == '' && hashFiles('desktop/yarn.lock') == ''
         run: |
-          cd tauri-app
+          cd desktop
           npm ci
 
       - name: 📝 Get full last commit message (with markdown)
@@ -121,13 +121,13 @@ jobs:
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
-        uses: tauri-apps/tauri-action@v0
+        uses: desktops/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            # If you sign/notarize on macOS, also set Apple secrets here as repo secrets:
           # APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, APPLE_ID/APPLE_PASSWORD or APPLE_API_KEY/_ID/_ISSUER, APPLE_TEAM_ID
         with:
-          projectPath: tauri-app
+          projectPath: desktop
           tagName: v${{ steps.meta.outputs.version }}
           releaseName: v${{ steps.meta.outputs.version }}
           releaseBody: |

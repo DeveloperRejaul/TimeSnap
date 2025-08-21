@@ -27,11 +27,9 @@ export default function Login() {
     }
   }
 
-  const handleLogin = async (
-  //  data:ISignupFormTypes
-  ) => {
+  const handleLogin = async (data:ISignupFormTypes) => {
     try {
-      // console.log(data);
+      console.log(data);
       navigate('/home')
     } catch  {
       // console.log(error);
