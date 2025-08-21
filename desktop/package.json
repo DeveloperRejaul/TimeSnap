@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prepare": "husky",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@tauri-apps/plugin-opener": "^2",
@@ -26,6 +29,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.32.0",
+    "husky": "^9.1.7",
     "tailwindcss": "^4.1.11",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.39.0",
