@@ -1,24 +1,10 @@
-use actix_web::{get, App, HttpServer,middleware::Logger};
+use actix_web::{App, HttpServer,middleware::Logger};
 use actix_files as fs;
-use actix_files::NamedFile;
 mod routes;
 mod models;
+mod controllers;
 use env_logger::Env;
 
-#[get("/")]
-async fn root() -> actix_web::Result<NamedFile> {
-     Ok(NamedFile::open("static/index.html")?)
-}
-
-#[get("/auth/forgotpass")]
-async fn forgotpass() -> actix_web::Result<NamedFile> {
-     Ok(NamedFile::open("static/index.html")?)
-}
-
-#[get("/auth/signup")]
-async fn signup() -> actix_web::Result<NamedFile> {
-     Ok(NamedFile::open("static/index.html")?)
-}
 
 
 
@@ -34,9 +20,9 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {        
         App::new()
             .wrap(Logger::new("%a %r %s %b %D"))
-            .service(root)
-            .service(forgotpass)
-            .service(signup)
+            .service(controllers::root)
+            .service(controllers::forgotpass)
+            .service(controllers::signup)
             .service(fs::Files::new("/static", ".").show_files_listing())
             .configure(routes::routes)
     })
