@@ -4,7 +4,7 @@ mod routes;
 mod models;
 mod controllers;
 use env_logger::Env;
-
+use std::fs::create_dir_all;
 
 
 
@@ -13,9 +13,11 @@ async fn main() -> std::io::Result<()> {
      // logger setup
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
-    let host = "127.0.0.1";
+    let host = "0.0.0.0";
     let port = 8080;
     println!("Server running on http://{}:{}", host, port);
+
+    create_dir_all("uploads")?;
 
     HttpServer::new(|| {        
         App::new()
