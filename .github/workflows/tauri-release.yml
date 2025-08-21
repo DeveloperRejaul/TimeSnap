@@ -92,7 +92,9 @@ jobs:
             libwayland-dev \
             libx11-dev \
             libxi-dev \
-            libxtst-dev
+            libxtst-dev \
+            libjavascriptcoregtk-4.1-dev \
+            libsoup-3.0-dev
 
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
