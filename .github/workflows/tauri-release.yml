@@ -114,11 +114,12 @@ jobs:
 
       - name: 📝 Get full last commit message (with markdown)
         run: |
+          commit_msg="$(git log -1 --pretty=%B)"
           {
             echo "RELEASE_NOTES<<EOF"
-            git log -1 --pretty=format:%B
+            echo "$commit_msg"
             echo "EOF"
-          } >> $GITHUB_ENV
+          } >> "$GITHUB_ENV"
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
