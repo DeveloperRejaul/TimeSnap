@@ -10,8 +10,7 @@
     "tauri": "tauri dev",
     "prepare": "husky",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "type-check": "tsc --noEmit",
-    "test": " node ./index.js"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@tauri-apps/plugin-opener": "^2",
