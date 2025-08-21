@@ -31,8 +31,8 @@ export default function Login() {
     try {
       console.log(data);
       navigate('/home')
-    } catch  {
-      // console.log(error);
+    } catch (error) {
+      console.log(error);
     }
   }
 

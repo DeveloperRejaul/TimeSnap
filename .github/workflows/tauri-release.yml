@@ -121,7 +121,7 @@ jobs:
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
-        uses: desktops/tauri-action@v0
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            # If you sign/notarize on macOS, also set Apple secrets here as repo secrets:
