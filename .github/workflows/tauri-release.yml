@@ -112,25 +112,25 @@ jobs:
           cd desktop
           npm ci
 
-      - name: 📝 Get full last commit message (with markdown)
+      - name: 📝 Get commit message
+        if: runner.os != 'Windows'
+        shell: bash
         run: |
-           # macOS/Linux (bash)
-            if [ "${{ matrix.shell }}" = "bash" ]; then
-              commit_msg="$(git log -1 --pretty=%B)"
-              {
-                echo "RELEASE_NOTES<<EOF"
-                echo "$commit_msg"
-                echo "EOF"
-              } >> "$GITHUB_ENV"
-            fi
+          commit_msg="$(git log -1 --pretty=%B)"
+          {
+            echo "RELEASE_NOTES<<EOF"
+            echo "$commit_msg"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
-            # Windows (pwsh)
-            if [ "${{ matrix.shell }}" = "pwsh" ]; then
-              $commit_msg = git log -1 --pretty=%B
-              Add-Content -Path $env:GITHUB_ENV -Value "RELEASE_NOTES<<EOF"
-              Add-Content -Path $env:GITHUB_ENV -Value $commit_msg
-              Add-Content -Path $env:GITHUB_ENV -Value "EOF"
-            fi
+      - name: 📝 Get commit message
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $commit_msg = git log -1 --pretty=%B
+          Add-Content -Path $env:GITHUB_ENV -Value "RELEASE_NOTES<<EOF"
+          Add-Content -Path $env:GITHUB_ENV -Value $commit_msg
+          Add-Content -Path $env:GITHUB_ENV -Value "EOF"
 
       - name: Build & upload to GitHub Release
         if: steps.checktag.outputs.exists == 'false'
