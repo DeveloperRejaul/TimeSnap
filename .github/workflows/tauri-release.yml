@@ -17,7 +17,7 @@ jobs:
             args: "--target aarch64-apple-darwin"
           - platform: macos-latest
             args: "--target x86_64-apple-darwin"
-          - platform: ubuntu-22.04
+          - platform: ubuntu-24.04
             args: ""
           - platform: windows-latest
             args: ""
@@ -73,28 +73,25 @@ jobs:
           sudo apt-get update
           # core + gtk/glib/pipewire/etc.
           sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
             build-essential \
             curl \
             wget \
             file \
-            libssl-dev \
             libxdo-dev \
-            libxkbcommon-dev \
-            libayatana-appindicator3-dev || sudo apt-get install -y libayatana-appindicator-dev \
-            libwebkit2gtk-4.0-dev \
-            libglib2.0-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
             librsvg2-dev \
-            libsqlite3-dev \
             libpipewire-0.3-dev \
+            libxkbcommon-dev \
+            libsqlite3-dev \
             libgbm-dev \
             libdrm-dev \
             libegl1-mesa-dev \
             libwayland-dev \
             libx11-dev \
             libxi-dev \
-            libxtst-dev \
-            libjavascriptcoregtk-4.1-dev \
-            libsoup-3.0-dev
+            libxtst-dev
 
       # Install frontend deps inside tauri-app/
       - name: Install deps (pnpm)
