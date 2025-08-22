@@ -1,11 +1,12 @@
-use actix_web::{get, post, web, HttpResponse, Responder,Error};
+use std::path::PathBuf;
+
+use actix_web::{get, post, web, HttpResponse, Responder,Error,Result};
 use actix_files::NamedFile;
-use crate::models::LoginFormData;
+use crate::{models::{EnvAppConfig, LoginFormData}, utils::{create_jwt, write_file}};
 use serde_json::json;
 use uuid::Uuid;
 use actix_multipart::Multipart;
 use futures_util::stream::StreamExt as _;
-use std::io::Write;
 
 // main / routes
 #[get("/")]
@@ -14,12 +15,12 @@ pub async fn root() -> impl Responder {
 }
 
 #[get("/auth/forgotpass")]
-pub async fn forgotpass() -> actix_web::Result<NamedFile> {
+pub async fn forgotpass() -> Result<NamedFile> {
      Ok(NamedFile::open("static/forgotpass.html")?)
 }
 
 #[get("/auth/signup")]
-pub async fn signup() -> actix_web::Result<NamedFile> {
+pub async fn signup() -> Result<NamedFile> {
      Ok(NamedFile::open("static/signup.html")?)
 }
 
@@ -30,12 +31,15 @@ pub async fn api_root() -> impl Responder {
 }
 
 #[post("/login")]
-pub async fn login(form: web::Form<LoginFormData>) -> impl Responder {
+pub async fn login(form: web::Form<LoginFormData>,config: web::Data<EnvAppConfig>) -> impl Responder {
+    let secret = &config.jwt_secret;
+
     HttpResponse::Ok().json(json!({
         "message": "Login successful",
         "email": form.email,
         "password": form.password,
-        "id":Uuid::new_v4().to_string()
+        "id":Uuid::new_v4().to_string(),
+        "token": create_jwt(&form.email, &form.password, secret),
     }))
 }
 
@@ -43,38 +47,35 @@ pub async fn login(form: web::Form<LoginFormData>) -> impl Responder {
 
 #[post("/screenshot")]
 pub async fn screenshot(mut payload: Multipart) -> Result<impl Responder, Error> {
+
+    println!("Received screenshot upload request");
+    let mut file_name = String::new();
     // Iterate over multipart stream
     while let Some(item) = payload.next().await {
-        let mut field = item?;
+       let field = item?;
 
-        // Extract original filename from Content-Disposition
-        let content_disposition = field.content_disposition();
-        let original_filename = content_disposition
-            .get_filename()
-            .map(|f| f.to_string())
-            .unwrap_or_else(|| "file.png".to_string());
-
-        // Split extension
-        let ext = std::path::Path::new(&original_filename)
-            .extension()
-            .and_then(|e| e.to_str())
-            .unwrap_or("png");
-
-
-        // Generate a unique filename
-        let filename = format!("uploads/{}.{}", Uuid::new_v4(),ext);
-
-        // Create file
-        let mut f: std::fs::File = std::fs::File::create(&filename)?;
-
-        // Write file content
-        while let Some(chunk) = field.next().await {
-            let data = chunk?;
-            f.write_all(&data)?;
-        }
+       if field.name() == "file" {
+          file_name=write_file(field).await;
+       }
     }
+    Ok(
+        HttpResponse::Ok().json(json!({
+            "file_id": file_name
+        }))
+    )
+}
 
-    Ok(HttpResponse::Ok().body("File uploaded successfully"))
+
+#[get("/file/{filename}")]
+pub async fn get_file(path: web::Path<String>) -> Result<NamedFile> {
+    let filename: String = path.into_inner();
+    let filepath: PathBuf = PathBuf::from(format!("uploads/{}", filename));
+
+    if filepath.exists() {
+        Ok(NamedFile::open(filepath)?)
+    } else {
+        Err(actix_web::error::ErrorNotFound("File not found"))
+    }
 }
 
 // just for testing
