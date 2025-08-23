@@ -8,6 +8,7 @@ export default tseslint.config(
     rules:{
       'no-console': ["warn"],
       indent: ["error", 2],
+      "@typescript-eslint/no-explicit-any":1,
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         {

@@ -4,6 +4,7 @@ use serde::{Serialize, Deserialize};
 pub struct LoginFormData {
     pub email: String,
     pub password: String,
+    pub remember:  Option<bool>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

@@ -5,12 +5,14 @@ import type { ISignupFormTypes } from "@/types";
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useLoginMutation } from "./api";
 
 
 export default function Login() {
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
-  const {getStore} = useApp()
+  const {getStore, setStore} = useApp()
+  const [login] = useLoginMutation()
 
 
   const handleSignup = async () => {
@@ -21,6 +23,7 @@ export default function Login() {
       console.log(error);
     }
   }
+  
   const handleForgotPass = async () => {
     try {
       const baseUrl = await getStore('BASE_URL')
@@ -30,10 +33,19 @@ export default function Login() {
     }
   }
 
-  const handleLogin = async (data:ISignupFormTypes) => {
+  const handleLogin = async (formData:ISignupFormTypes) => {
     try {
-      console.log(data);
-      navigate('/home')
+      console.log(formData);
+      
+      const {data, error} = await login(formData);
+      if(error) {
+        console.log(error);
+      }
+      if(data) {
+        setStore("USER_TOKEN", data.token);
+        setStore("USER_ID", data.id);
+        navigate('/home')
+      }
     } catch (error) {
       console.log(error);
     }
