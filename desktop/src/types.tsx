@@ -32,3 +32,5 @@ export interface ISignupFormTypes {
   password:string
   remember:boolean
 }
+
+export type StoreKeyTypes = "BASE_URL"

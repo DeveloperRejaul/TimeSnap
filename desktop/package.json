@@ -7,17 +7,21 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri dev",
+    "start": "tauri dev",
+    "tauri": "tauri",
     "prepare": "husky",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-store": "^2.4.0",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.62.0",
+    "react-redux": "^9.2.0",
     "react-router": "^7.7.1"
   },
   "devDependencies": {

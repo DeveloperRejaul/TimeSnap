@@ -1,29 +1,32 @@
 import Button from "@/core/components/Button";
 import Input from "@/core/components/Input";
-// import Setting from "@/core/icons/Setting";
+import { useApp } from "@/core/hooks/useApp";
 import type { ISignupFormTypes } from "@/types";
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 
 export default function Login() {
-  const {state}= useLocation()
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
+  const {getStore} = useApp()
 
-  const handlesignup = async () => {
+
+  const handleSignup = async () => {
     try {
-      await openUrl(`${state?.baseUrl}/auth/signup`  )
-    } catch {
-      // console.log(error);
+      const baseUrl = await getStore('BASE_URL')
+      await openUrl(`${baseUrl}/auth/signup`  )
+    } catch(error) {
+      console.log(error);
     }
   }
   const handleForgotPass = async () => {
     try {
-      await openUrl(`${state?.baseUrl}/auth/forgotpass`  )
-    } catch  {
-      // console.log(error);
+      const baseUrl = await getStore('BASE_URL')
+      await openUrl(`${baseUrl}/auth/forgotpass`)
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -87,7 +90,7 @@ export default function Login() {
         <div className="text-center text-xs">
           <p className="text-text-muted">Don't have an account?</p>
           <div
-            onClick={handlesignup}
+            onClick={handleSignup}
             className="text-primary text-sm font-semibold cursor-pointer hover:underline"
           >
           Sign Up
