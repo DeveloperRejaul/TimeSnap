@@ -33,4 +33,23 @@ export interface ISignupFormTypes {
   remember:boolean
 }
 
-export type StoreKeyTypes = "BASE_URL"
+export type StoreKeyTypes = "BASE_URL" | "USER_TOKEN" | "USER_ID";
+
+export type Error = {
+  status: number;
+  message:string
+}
+export type Success<T = any> = {
+ data: T
+}
+
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+export interface ILoginResponse {
+  id:string;
+  token:string;
+}

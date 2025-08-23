@@ -31,13 +31,14 @@ pub async fn api_root() -> impl Responder {
 }
 
 #[post("/login")]
-pub async fn login(form: web::Form<LoginFormData>,config: web::Data<EnvAppConfig>) -> impl Responder {
+pub async fn login(form: web::Json<LoginFormData>,config: web::Data<EnvAppConfig>) -> impl Responder {
     let secret = &config.jwt_secret;
 
     HttpResponse::Ok().json(json!({
         "message": "Login successful",
         "email": form.email,
         "password": form.password,
+        "remember": form.remember,
         "id":Uuid::new_v4().to_string(),
         "token": create_jwt(&form.email, &form.password, secret),
     }))

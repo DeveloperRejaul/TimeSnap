@@ -1,20 +1,17 @@
  
 import Button from "@/core/components/Button";
 import Input from "@/core/components/Input";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate} from "react-router";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form"
 import type { ISetupFormTypes } from "@/types";
 import { useApp } from "@/core/hooks/useApp";
 
-
-
 export default function Setup() {
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISetupFormTypes>()
-  const {setStore}= useApp()
-
-
+  const {setStore, isBaseUrlExists ,isLoading}= useApp()
+  
   const onSubmit:SubmitHandler<ISetupFormTypes> = async (data) => {
     try {
       await setStore("BASE_URL", data.baseUrl)
@@ -24,6 +21,12 @@ export default function Setup() {
     }
   }
 
+
+
+  if(isLoading) return <div>Loading...</div>
+  if(isBaseUrlExists){
+    return <Navigate to="/login" />
+  }
   return (
     <div class="flex flex-1 justify-center items-center flex-col">
       <form class="flex flex-col w-full max-w-sm min-w-[200px] gap-y-3" onSubmit={handleSubmit(onSubmit)}>

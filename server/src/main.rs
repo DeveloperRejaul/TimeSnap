@@ -8,6 +8,7 @@ mod utils;
 use env_logger::Env;
 use std::fs::create_dir_all;
 use dotenvy::dotenv;
+use actix_cors::Cors;
 
 use crate::models::EnvAppConfig;
 
@@ -31,6 +32,13 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {        
         App::new()
+            .wrap(
+                Cors::default()
+                .allow_any_origin() 
+                .allow_any_method()
+                .allow_any_header()
+                .supports_credentials()
+            )
             .app_data(web::Data::new(config.clone()))
             .wrap(Logger::new("%a %r %s %b %D"))
             .service(controllers::root)
