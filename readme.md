@@ -126,3 +126,9 @@ Built with love using **Tauri** and **Rust** by \[Your Name / Organization]
 ---
 
 > “Monitor smart, work better — with Time-Snap.”
+
+
+For mac skip shacking 
+```shall
+sudo xattr -rd com.apple.quarantine /Applications/TimeSnap.app
+```
