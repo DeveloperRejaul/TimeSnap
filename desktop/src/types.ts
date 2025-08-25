@@ -5,12 +5,14 @@ export interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   id: string;
   register?:any
   error?:string
+  classname?:string
 }
 
 export interface IconProps {
     size?:number;
     color?:string;
     class?:string
+    onClick?: () => void;
 }
 
 export interface IButtonProps {
@@ -25,7 +27,8 @@ export interface IButtonProps {
 }
 
 export interface ISetupFormTypes {
-  baseUrl:string
+  baseUrl:string,
+  isBaseUrlShow:boolean
 }
 export interface ISignupFormTypes {
   email:string

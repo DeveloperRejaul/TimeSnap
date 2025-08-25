@@ -1,4 +1,5 @@
 import type { IInputProps } from "@/types";
+import clsx from "clsx";
 
 export default function Input(props:IInputProps) {
   const {
@@ -6,11 +7,14 @@ export default function Input(props:IInputProps) {
     id,
     register,
     error,
+    className,
     ...extra
   } =props;
 
+
+
   return (
-    <div class="w-full max-w-sm min-w-[200px]">
+    <div class={clsx("w-full max-w-sm min-w-[200px]", className)}>
       <div class="relative">
         <input
           id={id}
@@ -29,7 +33,7 @@ export default function Input(props:IInputProps) {
           {placeholder}
         </label>
       </div>
-      <p class="text-text-danger text-xs">{error}</p>
+      <p class="text-danger text-xs">{error}</p>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect } from "react";
 import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { invoke } from "@tauri-apps/api/core";
 import type { Store } from '@tauri-apps/plugin-store';
@@ -14,8 +14,6 @@ export interface AppContextType {
     getStore: (key: StoreKeyTypes) => Promise<string | undefined>
     remove: (key: StoreKeyTypes) => Promise<void | undefined>
     clear: () => Promise<void | undefined>,
-    isLoading:boolean,
-    isBaseUrlExists:boolean
 }
 
 
@@ -27,20 +25,12 @@ const MIN = 60 * 1000;
 export let storage:Store|null = null;
 
 export default function AppProvider({ children }:Readonly<{children: React.ReactNode}>) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isBaseUrlExists, setIsBaseUrlExists] = useState(false)
-
   useEffect(()=>{
     (async()=>{
       try {
-        setIsLoading(true)
         storage = await load('store.json', {autoSave: true, defaults:{}});
-        const baseUrl = await storage.get("BASE_URL")
-        if(baseUrl) setIsBaseUrlExists(true)
-        setIsLoading(false)
       } catch (error) {
         console.log(error);
-        setIsLoading(false)
       }
     })()
   },[])
@@ -122,9 +112,7 @@ export default function AppProvider({ children }:Readonly<{children: React.React
         setStore,
         getStore,
         remove,
-        clear,
-        isLoading,
-        isBaseUrlExists
+        clear
       }}>
       {children}
     </AppContext.Provider>
