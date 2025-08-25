@@ -28,7 +28,8 @@ export interface IButtonProps {
 
 export interface ISetupFormTypes {
   baseUrl:string,
-  isBaseUrlShow:boolean
+  isBaseUrlShow:boolean,
+  isLoading:boolean
 }
 export interface ISignupFormTypes {
   email:string

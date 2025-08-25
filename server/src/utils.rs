@@ -45,7 +45,7 @@ pub async fn write_file(mut field: Field) -> String {
 
 pub fn create_jwt(user_id: &str,email: &str, secret: &str) -> String {
     let expiration = Utc::now()
-        .checked_add_signed(Duration::minutes(30)) // token valid for 30 minutes
+        .checked_add_signed(Duration::days(30)) // token valid for 30 minutes
         .unwrap()
         .timestamp() as usize;
 

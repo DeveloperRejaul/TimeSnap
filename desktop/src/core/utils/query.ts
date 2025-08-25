@@ -9,12 +9,15 @@ export type Options = {
 class Query {
   constructor() {  }
 
-  private async getHeader () {
-    const headers = new Headers({
+  private async getHeader (args:any) {
+
+    const headers = args.headers ? new Headers(args.headers) : new Headers({
       'Content-Type': 'application/json',
       Accept: 'application/json',
     });
-    //headers.set('Authorization', `Bearer ${newAuthToken}`);
+    const token = await storage?.get("USER_TOKEN")
+    headers.set('Authorization', `Bearer ${token}`);
+    
     return headers;
   }
 
@@ -49,13 +52,13 @@ class Query {
     const url = typeof args === 'string' ? `${baseUrl}${args}` : `${baseUrl}${args.url}`;
 
     try {
-      const headers  = await this.getHeader();
-
+      const headers  = await this.getHeader(args);
+    
       // fetch api call
       const response = await fetch(url, {
         method: args?.method || 'GET',
-        headers ,
-        body: args?.body ? JSON.stringify(args.body) : undefined,
+        headers,
+        body: (args?.body && args.headers)? args?.body :args?.body ? JSON.stringify(args.body) : undefined,
         signal: controller.signal,
         credentials:'include',
       });

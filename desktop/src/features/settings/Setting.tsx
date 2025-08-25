@@ -4,18 +4,34 @@ import { useApp } from "@/core/hooks/useApp"
 import ArrowLeft from "@/core/icons/ArrowLeft"
 import type { ISetupFormTypes } from "@/types"
 import clsx from "clsx"
-import { useForm } from "react-hook-form"
+import { useEffect } from "react"
+import {useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 
 export default function Setting() {
   const navigate = useNavigate()
-  const {setStore}= useApp()
-  const {handleSubmit, register,watch, setValue,formState:{errors}} = useForm<ISetupFormTypes>({
+  const {setStore,getStore}= useApp()
+  const {handleSubmit, register,watch, setValue,formState:{errors,isLoading}} = useForm<ISetupFormTypes>({
     defaultValues:{
       baseUrl: "",
-      isBaseUrlShow:false
+      isBaseUrlShow:false,
+      isLoading:true,
     }
   })
+
+  useEffect(() => {
+    (async()=>{
+      try {
+        const baseUrl = await getStore("BASE_URL")
+        if(baseUrl) setValue("baseUrl", baseUrl)
+        setValue("isLoading", false)
+      } catch (error) {
+        console.log(error);
+        setValue("isLoading", false)
+      }
+    })()
+  }, [])
+  
 
   const isBaseUrlShow = watch("isBaseUrlShow")
 
@@ -24,9 +40,10 @@ export default function Setting() {
       await setStore("BASE_URL", data.baseUrl)
     } catch (error) {
       console.log(error);
-      
     }
   }
+
+  if(isLoading) return <div>Loading...</div>
 
   return (
     <form class="p-3 space-y-2 flex flex-col justify-between flex-1" onSubmit={handleSubmit(onSubmit)}>
