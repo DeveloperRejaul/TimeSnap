@@ -28,9 +28,7 @@ export default function Button(props: IButtonProps) {
     danger: 'bg-text-danger text-white hover:brightness-110',
   }[variant];
 
-  const disabledClasses = disabled
-    ? 'opacity-50 cursor-not-allowed pointer-events-none'
-    : 'cursor-pointer';
+  const disabledClasses = disabled? 'opacity-50 cursor-not-allowed pointer-events-none': 'cursor-pointer';
 
   return (
     <button

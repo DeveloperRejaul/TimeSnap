@@ -5,10 +5,17 @@ import Minimize from "../icons/Minimize";
 import Maximize from "../icons/Maximize";
 import { useState } from "react";
 import Setting from "../icons/Setting";
+import { useLocation, useNavigate } from "react-router";
 
 export default function Header() {
   const appWindow = getCurrentWindow();
   const [isMaximize, setIsMaximize]= useState(false)
+  const navigate = useNavigate()
+  const {pathname} =useLocation();
+
+
+  const settingAvailable = ["/home", '/'];
+
 
 
   return (
@@ -37,7 +44,7 @@ export default function Header() {
         </div>
       </div>
       <div class="pr-3 cursor-pointer">
-        <Setting class="h-4 w-4 fill-text-muted"/>
+        {settingAvailable.includes(pathname) && <Setting class="h-4 w-4 fill-text-muted" onClick={()=> navigate("/settings")}/>}
       </div>
     </div>
   )

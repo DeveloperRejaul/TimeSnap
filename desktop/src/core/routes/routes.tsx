@@ -1,7 +1,7 @@
 import App from "@/App";
 import Login from "@/features/auth/Login";
 import Home from "@/features/home/Home";
-import Setup from "@/features/setup/Setup";
+import Setting from "@/features/settings/Setting";
 import {createBrowserRouter} from "react-router";
 
 export const router = createBrowserRouter([
@@ -12,15 +12,15 @@ export const router = createBrowserRouter([
       {
         index: true,
         path: "/",
-        element: <Setup />,
-      },
-      {
-        path: "login",
         element: <Login />,
       }, 
       {
         path: "home",
         element: <Home />,
+      },
+      {
+        path: "settings",
+        element: <Setting />,
       },
     ]
   },

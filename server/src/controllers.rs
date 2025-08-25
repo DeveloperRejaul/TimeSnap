@@ -48,9 +48,9 @@ pub async fn login(form: web::Json<LoginFormData>,config: web::Data<EnvAppConfig
 
 #[post("/screenshot")]
 pub async fn screenshot(mut payload: Multipart) -> Result<impl Responder, Error> {
-
-    println!("Received screenshot upload request");
     let mut file_name = String::new();
+
+    println!("Receiving file...");
     // Iterate over multipart stream
     while let Some(item) = payload.next().await {
        let field = item?;
