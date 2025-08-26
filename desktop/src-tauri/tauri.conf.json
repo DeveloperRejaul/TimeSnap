@@ -28,6 +28,7 @@
     "macOSPrivateApi": true
   },
   "bundle": {
+    "externalBin": ["binaries/app"],
     "active": true,
     "targets": "all",
     "icon": [
