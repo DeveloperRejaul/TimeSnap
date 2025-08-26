@@ -6,16 +6,18 @@ import { openUrl } from '@tauri-apps/plugin-opener';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "./api";
+
 export default function Login() {
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
   const {getStore, setStore} = useApp()
   const [login] = useLoginMutation()
 
+
   const handleSignup = async () => {
     try {
       const baseUrl = await getStore('BASE_URL')
-      await openUrl(`${baseUrl}/auth/signup`  )
+      await openUrl(`${baseUrl}/auth/signup`)
     } catch(error) {
       console.log(error);
     }

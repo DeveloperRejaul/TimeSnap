@@ -3,7 +3,7 @@ import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { invoke } from "@tauri-apps/api/core";
 import type { Store } from '@tauri-apps/plugin-store';
 import { load } from '@tauri-apps/plugin-store';
-import type { StoreKeyTypes } from "@/types";
+import type { KeyName, StoreKeyTypes } from "@/types";
 export interface AppContextType {
     monitor: () => Promise<void>;
     getScreenshot: () => Promise<string[] | undefined>;
@@ -14,6 +14,8 @@ export interface AppContextType {
     getStore: (key: StoreKeyTypes) => Promise<string | undefined>
     remove: (key: StoreKeyTypes) => Promise<void | undefined>
     clear: () => Promise<void | undefined>,
+    keyPress: (key:KeyName) => Promise<void | undefined>,
+    type: (str:string) => Promise<void | undefined>,
 }
 
 
@@ -100,6 +102,23 @@ export default function AppProvider({ children }:Readonly<{children: React.React
       console.log(error);
     }
   }
+
+  const keyPress = async (key: KeyName) => {
+    try {
+      await invoke("press_key", { text: key })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const type = async (char:string) => {
+    try {
+      await keyPress("backspace")
+      await invoke("type_string", {text: char})
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   return (
     <AppContext.Provider 
@@ -112,7 +131,9 @@ export default function AppProvider({ children }:Readonly<{children: React.React
         setStore,
         getStore,
         remove,
-        clear
+        clear,
+        keyPress,
+        type
       }}>
       {children}
     </AppContext.Provider>
