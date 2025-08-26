@@ -20,7 +20,8 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "sidecar": false,
+          "name": "binaries/app",
+          "sidecar": true,
           "args":true
         }
       ]
