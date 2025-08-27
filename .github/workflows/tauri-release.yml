@@ -92,7 +92,12 @@ jobs:
             libx11-dev \
             libxi-dev \
             libxtst-dev \
-            pkg-config
+            pkg-config \
+            libxcb-randr0-dev \
+            libxcb-shape0-dev \
+            libxcb-xfixes0-dev
+            libxrandr-dev \
+            libxfixes-dev
 
       # Install frontend deps inside desktop/
       - name: Install deps (pnpm)
