@@ -14,17 +14,6 @@
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
     "core:window:allow-internal-toggle-maximize",
-    "store:default",
-    "shell:default",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "name": "binaries/app",
-          "sidecar": true,
-          "args":true
-        }
-      ]
-    }
+    "store:default"
   ]
 }
