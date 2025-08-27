@@ -4,7 +4,6 @@ import AppProvider from "./core/context/AppProvider";
 import { Provider } from "react-redux";
 import { store } from "./core/rtk/store";
 
-
 export default function App() {
   return (
     <AppProvider>

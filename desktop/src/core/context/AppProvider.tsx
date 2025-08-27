@@ -13,7 +13,7 @@ export interface AppContextType {
     setStore: (key: StoreKeyTypes, value: string) => Promise<void | undefined>
     getStore: (key: StoreKeyTypes) => Promise<string | undefined>
     remove: (key: StoreKeyTypes) => Promise<void | undefined>
-    clear: () => Promise<void | undefined>,
+    clear: () => Promise<void | undefined>
 }
 
 
@@ -100,7 +100,7 @@ export default function AppProvider({ children }:Readonly<{children: React.React
       console.log(error);
     }
   }
-  
+
   return (
     <AppContext.Provider 
       value={{

@@ -1,35 +1,53 @@
+use tauri::{AppHandle, Emitter};
 use base64::{engine::general_purpose, Engine as _};
 use image::ImageFormat;
 use rdev::{listen, Event, EventType};
 use std::io::Cursor;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::OnceLock;
-use tauri::{AppHandle, Emitter};
-use xcap::Monitor;
+use scrap::{Capturer, Display};
 
 static IS_ALREADY_CALL: OnceLock<AtomicBool> = OnceLock::new();
 
 #[tauri::command]
 async fn get_screenshot() -> Result<Vec<String>, String> {
-    // Get all monitors
-    let monitors = Monitor::all().map_err(|e| e.to_string())?;
-    if monitors.is_empty() {
-        return Err("No monitors found".into());
+    let displays = Display::all().map_err(|e| e.to_string())?;
+    if displays.is_empty() {
+        return Err("No displays found".into());
     }
 
     let mut base64_images = Vec::new();
 
-    for monitor in monitors {
-        // Capture full monitor image
-        let image = monitor.capture_image().map_err(|e| e.to_string())?;
+    for (_i, display) in displays.into_iter().enumerate() {
+        let mut capturer = Capturer::new(display).map_err(|e| e.to_string())?;
 
-        // Convert image to PNG bytes in memory
+        // Wait until we can get a frame
+        let frame = loop {
+            match capturer.frame() {
+                Ok(buf) => break buf.to_vec(),
+                Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => continue,
+                Err(e) => return Err(e.to_string()),
+            }
+        };
+
+        let width = capturer.width();
+        let height = capturer.height();
+
+        let mut img = image::ImageBuffer::new(width as u32, height as u32);
+
+        for (j, pixel) in img.pixels_mut().enumerate() {
+            let idx = j * 4;
+            *pixel = image::Rgba([
+                frame[idx + 2], // B
+                frame[idx + 1], // G
+                frame[idx],     // R
+                255,
+            ]);
+        }
+
         let mut buf = Cursor::new(Vec::new());
-        image
-            .write_to(&mut buf, ImageFormat::Png)
-            .map_err(|e| e.to_string())?;
+        img.write_to(&mut buf, ImageFormat::Png).map_err(|e| e.to_string())?;
 
-        // Encode to base64
         let encoded = general_purpose::STANDARD.encode(buf.get_ref());
         base64_images.push(format!("data:image/png;base64,{}", encoded));
     }
@@ -74,6 +92,7 @@ fn monitor_activity(app: AppHandle) -> Result<String, String> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![get_screenshot, monitor_activity])

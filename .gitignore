@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Rust
+/target/
+**/*.rs.bk
+**/*.rlib
+**/*.d
+**/*.gcda
+**/*.gcno
+**/*.profraw
+**/*.profdata
+
+# IntelliJ-based IDEs
+.idea/
+*.iml
+
+# Operating System Files
+.DS_Store
+Thumbs.db

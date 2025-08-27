@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "./api";
 
-
 export default function Login() {
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
@@ -18,7 +17,7 @@ export default function Login() {
   const handleSignup = async () => {
     try {
       const baseUrl = await getStore('BASE_URL')
-      await openUrl(`${baseUrl}/auth/signup`  )
+      await openUrl(`${baseUrl}/auth/signup`)
     } catch(error) {
       console.log(error);
     }
@@ -36,7 +35,6 @@ export default function Login() {
   const handleLogin = async (formData:ISignupFormTypes) => {
     try {
       console.log(formData);
-      
       const {data, error} = await login(formData);
       if(error) {
         console.log(error);
