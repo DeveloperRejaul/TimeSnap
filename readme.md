@@ -133,3 +133,13 @@ For mac skip shacking
 ```shall
 sudo xattr -rd com.apple.quarantine /Applications/TimeSnap.app
 ```
+For linux
+screen capture work on X11
+if use wayland get black screen
+```
+echo $XDG_SESSION_TYPE // for Verify you are on X11
+
+// move to X11
+sudo nano /etc/gdm3/custom.conf 
+#WaylandEnable=false // uncomment this line
+```
