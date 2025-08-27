@@ -5,6 +5,9 @@ edition = "2024"
 
 [dependencies]
 base64 = "0.22.1"
+enigo = "0.5.0"
 image = "0.25.6"
+rdev = "0.5.3"
 scrap = "0.5.0"
 tokio = { version = "1", features = ["full"] }
+xcap = "0.7.0"
