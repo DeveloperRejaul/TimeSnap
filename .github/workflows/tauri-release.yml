@@ -91,7 +91,8 @@ jobs:
             libwayland-dev \
             libx11-dev \
             libxi-dev \
-            libxtst-dev
+            libxtst-dev \
+            pkg-config
 
       # Install frontend deps inside desktop/
       - name: Install deps (pnpm)
