@@ -1,3 +1,9 @@
-var robot = require("robotjs");
-const key = process.argv[2];
-robot.keyTap(key);
+const screenshot = require('screenshot-desktop')
+
+screenshot().then((img) => {
+  console.log(img);
+  
+}).catch((err) => {
+  console.log(err);
+  
+})
