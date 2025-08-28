@@ -5,14 +5,13 @@ use rdev::{listen, Event, EventType};
 use std::io::Cursor;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::OnceLock;
-use scrap::{Capturer, Display};
-use xcap::Monitor;
 
 static IS_ALREADY_CALL: OnceLock<AtomicBool> = OnceLock::new();
 
 
 #[cfg(any(target_os = "macos", target_os = "windows"))]
-pub async fn get_screenshot_impl() -> Result<Vec<String>, String> {
+async fn get_screenshot_impl() -> Result<Vec<String>, String> {
+    use xcap::Monitor;
     // Get all monitors
     let monitors = Monitor::all().map_err(|e| e.to_string())?;
     if monitors.is_empty() {
@@ -42,6 +41,7 @@ pub async fn get_screenshot_impl() -> Result<Vec<String>, String> {
 
 #[cfg(target_os = "linux")]
 async fn get_screenshot_impl() -> Result<Vec<String>, String> {
+    use scrap::{Capturer, Display};
     let displays = Display::all().map_err(|e| e.to_string())?;
     if displays.is_empty() {
         return Err("No displays found".into());
