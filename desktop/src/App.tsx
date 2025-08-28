@@ -8,7 +8,7 @@ export default function App() {
   return (
     <AppProvider>
       <Provider store={store}>
-        <main class="bg-background h-[100vh] w-[100vw] flex flex-1 flex-col overflow-hidden rounded-md shadow-2xl">
+        <main class="bg-background h-[100vh] w-[100vw] flex flex-col flex-1 overflow-hidden rounded-md shadow-2xl ">
           <Header/>
           <Outlet/>
         </main>

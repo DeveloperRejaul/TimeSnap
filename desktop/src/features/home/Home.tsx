@@ -2,6 +2,7 @@ import { useApp } from "@/core/hooks/useApp"
 import { dataURLtoFile } from "@/core/utils/img"
 import { useEffect } from "react"
 import { useUploadScreenshotMutation } from "./api"
+import SideBar from "@/core/components/SideBar"
 
 
 let intervalId: NodeJS.Timeout | null = null
@@ -36,7 +37,11 @@ export default function Home() {
   },[])
 
   return (
-    <div>Home</div>
+    <div class="flex">
+      <SideBar/>
+      <div>Home</div>
+    </div>
+    
   )
 }
 
