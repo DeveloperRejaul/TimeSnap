@@ -34,7 +34,6 @@ export default function Login() {
 
   const handleLogin = async (formData:ISignupFormTypes) => {
     try {
-      console.log(formData);
       const {data, error} = await login(formData);
       if(error) {
         console.log(error);
