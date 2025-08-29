@@ -1,13 +1,12 @@
-use tauri::{AppHandle, Emitter};
 use base64::{engine::general_purpose, Engine as _};
 use image::ImageFormat;
 use rdev::{listen, Event, EventType};
 use std::io::Cursor;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::OnceLock;
+use tauri::{AppHandle, Emitter};
 
 static IS_ALREADY_CALL: OnceLock<AtomicBool> = OnceLock::new();
-
 
 #[cfg(any(target_os = "macos", target_os = "windows"))]
 async fn get_screenshot_impl() -> Result<Vec<String>, String> {
@@ -37,7 +36,6 @@ async fn get_screenshot_impl() -> Result<Vec<String>, String> {
 
     Ok(base64_images)
 }
-
 
 #[cfg(target_os = "linux")]
 async fn get_screenshot_impl() -> Result<Vec<String>, String> {
@@ -77,7 +75,8 @@ async fn get_screenshot_impl() -> Result<Vec<String>, String> {
         }
 
         let mut buf = Cursor::new(Vec::new());
-        img.write_to(&mut buf, ImageFormat::Png).map_err(|e| e.to_string())?;
+        img.write_to(&mut buf, ImageFormat::Png)
+            .map_err(|e| e.to_string())?;
 
         let encoded = general_purpose::STANDARD.encode(buf.get_ref());
         base64_images.push(format!("data:image/png;base64,{}", encoded));
@@ -85,7 +84,6 @@ async fn get_screenshot_impl() -> Result<Vec<String>, String> {
 
     Ok(base64_images)
 }
-
 
 #[tauri::command]
 async fn get_screenshot() -> Result<Vec<String>, String> {

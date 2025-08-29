@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import AppProvider from "./core/context/AppProvider";
 import { Provider } from "react-redux";
 import { store } from "./core/rtk/store";
+import Toast from "./core/components/Toast";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
           <Header/>
           <Outlet/>
         </main>
+        <Toast/>
       </Provider>
     </AppProvider>
   );
