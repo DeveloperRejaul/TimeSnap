@@ -7,15 +7,17 @@ import clsx from "clsx"
 import { useEffect } from "react"
 import {useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
+import { toast } from "react-toastify"
 
 export default function Setting() {
   const navigate = useNavigate()
   const {setStore,getStore}= useApp()
-  const {handleSubmit, register,watch, setValue,formState:{errors,isLoading}} = useForm<ISetupFormTypes>({
+  const {handleSubmit, register,watch, setValue,formState:{errors,isLoading, isSaving}} = useForm<ISetupFormTypes>({
     defaultValues:{
       baseUrl: "",
       isBaseUrlShow:false,
       isLoading:true,
+      isSaving:false
     }
   })
 
@@ -37,9 +39,13 @@ export default function Setting() {
 
   const onSubmit = async(data: ISetupFormTypes) => {
     try {
+      setValue("isSaving", true)
       await setStore("BASE_URL", data.baseUrl)
+      setValue("isSaving", false)
+      toast.success("Settings updated successfully")
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -81,7 +87,7 @@ export default function Setting() {
       </div>
       <div class="space-x-3 self-end">
         <Button text="Back" onClick={()=>navigate(-1)}/>
-        <Button text="Save Changes" onClick={handleSubmit(onSubmit)}/>
+        <Button text="Save Changes" onClick={handleSubmit(onSubmit)} isLoading={isSaving}/>
       </div>
     </form>
   )

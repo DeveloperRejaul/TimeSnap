@@ -5,7 +5,7 @@ export default function Button(props: IButtonProps) {
   const {
     children,
     onClick,
-    disabled = false,
+    isLoading= false,
     className = '',
     type = 'button',
     variant = 'primary',
@@ -28,16 +28,21 @@ export default function Button(props: IButtonProps) {
     danger: 'bg-text-danger text-white hover:brightness-110',
   }[variant];
 
-  const disabledClasses = disabled? 'opacity-50 cursor-not-allowed pointer-events-none': 'cursor-pointer';
+  const disabledClasses = isLoading? 'opacity-50 cursor-not-allowed pointer-events-none': 'cursor-pointer';
 
   return (
     <button
       type={type}
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
+      onClick={isLoading ? undefined : onClick}
+      disabled={isLoading}
       class={clsx(base, sizes, variants, disabledClasses, className)}
     >
-      {children ?? text}
+      {isLoading ? (
+        <span
+          className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin p-2"
+          aria-hidden="true" 
+        />
+      ) :children ?? text }
     </button>
   );
 }
