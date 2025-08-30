@@ -20,7 +20,7 @@ Built using **Tauri** for the desktop client and an example backend written in *
 ## 📁 Project Structure Overview
 
 ```
-├── client/                 # Tauri-based desktop client application
+├── desktop/                 # Tauri-based desktop client application
 ├── server/                 # Sample backend in Rust (for reference)
 └── README.md               # You're here
 ```
@@ -108,7 +108,7 @@ Please ensure your code is well-documented and tested.
 
 If you run into any issues or have questions:
 
-* Check the [Issues](https://github.com/your-username/time-snap/issues)
+* Check the [Issues](https://github.com/DeveloperRejaul/time-snap/issues)
 * Submit a bug report or feature request
 
 ---

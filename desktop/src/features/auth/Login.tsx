@@ -6,12 +6,15 @@ import { openUrl } from '@tauri-apps/plugin-opener';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "./api";
+import { toast } from "react-toastify";
+
 
 export default function Login() {
   const navigate = useNavigate();
   const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
   const {getStore, setStore} = useApp()
-  const [login] = useLoginMutation()
+  const [login, {isLoading}] = useLoginMutation()
+  
 
 
   const handleSignup = async () => {
@@ -20,6 +23,7 @@ export default function Login() {
       await openUrl(`${baseUrl}/auth/signup`)
     } catch(error) {
       console.log(error);
+      toast.error("Something went wrong. Please try again.")
     }
   }
   
@@ -29,6 +33,7 @@ export default function Login() {
       await openUrl(`${baseUrl}/auth/forgotpass`)
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -37,6 +42,7 @@ export default function Login() {
       const {data, error} = await login(formData);
       if(error) {
         console.log(error);
+        toast.error("Something went wrong. Please try again.")
       }
       if(data) {
         setStore("USER_TOKEN", data.token);
@@ -45,6 +51,7 @@ export default function Login() {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -85,7 +92,7 @@ export default function Login() {
               className="form-checkbox h-4 w-4 text-primary rounded"
               defaultChecked
             />
-            <span class="text-text-muted text-xs">Remember me</span>
+            <span class="text-muted text-xs">Remember me</span>
           </label>
 
           {/* Forgot Password */}
@@ -95,7 +102,7 @@ export default function Login() {
             Forgot Password?
           </div>
         </div>
-        <Button text="Sign in" type="submit"/>
+        <Button text="Sign in" type="submit" isLoading={isLoading}/>
         <div className="text-center text-xs">
           <p className="text-text-muted">Don't have an account?</p>
           <div

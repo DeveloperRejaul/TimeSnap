@@ -19,17 +19,18 @@ export interface IButtonProps {
     text?:string;
     children?: React.ReactNode;
     onClick?: () => void;
-    disabled?: boolean;
     className?: string;
     type?: 'button' | 'submit' | 'reset';
     variant?: 'primary' | 'secondary' | 'danger';
     size?: 'sm' | 'md' | 'lg';
+    isLoading?: boolean;
 }
 
 export interface ISetupFormTypes {
   baseUrl:string,
   isBaseUrlShow:boolean,
   isLoading:boolean
+  isSaving:boolean
 }
 export interface ISignupFormTypes {
   email:string

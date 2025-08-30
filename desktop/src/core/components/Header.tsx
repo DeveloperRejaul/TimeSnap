@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <div
-      class="w-full h-9 flex items-center justify-between"
+      class="w-full h-9 flex items-center justify-betwee"
       data-tauri-drag-region
     >
       {available.includes(pathname) && <Menu/>}

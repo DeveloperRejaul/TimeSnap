@@ -38,8 +38,18 @@ export default function Home() {
 
   return (
     <div class="flex">
-      <SideBar/>
-      <div>Home</div>
+      <SideBar />
+      <div class="fex-1 flex w-full flex-col">
+        {/* top header */}
+        <div  data-tauri-drag-region class="h-6 flex"/>
+        {/* main content */}
+        <div>
+          {/* task and settings  */}
+
+          {/* Home main content */}
+
+        </div>
+      </div>
     </div>
     
   )
