@@ -108,7 +108,7 @@ Please ensure your code is well-documented and tested.
 
 If you run into any issues or have questions:
 
-* Check the [Issues](https://github.com/DeveloperRejaul/time-snap/issues)
+* Check the [Issues](https://github.com/DeveloperRejaul/TimeSnap/issues)
 * Submit a bug report or feature request
 
 ---
