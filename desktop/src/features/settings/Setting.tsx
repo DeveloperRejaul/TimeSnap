@@ -12,7 +12,7 @@ import { toast } from "react-toastify"
 export default function Setting() {
   const navigate = useNavigate()
   const {setStore,getStore}= useApp()
-  const {handleSubmit, register,watch, setValue,formState:{errors,isLoading, isSaving}} = useForm<ISetupFormTypes>({
+  const {handleSubmit, register,watch, setValue,formState:{errors,isLoading}} = useForm<ISetupFormTypes>({
     defaultValues:{
       baseUrl: "",
       isBaseUrlShow:false,
@@ -35,11 +35,10 @@ export default function Setting() {
   }, [])
 
   const {pathname} = useLocation()
-
-  console.log(location);
   
 
   const isBaseUrlShow = watch("isBaseUrlShow")
+  const isSaving = watch("isSaving")
 
   const onSubmit = async(data: ISetupFormTypes) => {
     try {
