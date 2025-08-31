@@ -116,7 +116,7 @@ jobs:
         if: hashFiles('desktop/pnpm-lock.yaml') == '' && hashFiles('desktop/yarn.lock') == ''
         run: |
           cd desktop
-          npm ci
+          npm install
 
       - name: 📝 Get commit message
         if: runner.os != 'Windows'
