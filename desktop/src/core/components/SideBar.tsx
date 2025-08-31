@@ -2,31 +2,41 @@ import Menu from './Menu';
 import Setting from '../icons/Setting';
 import clsx from 'clsx';
 import TaskIcon from '../icons/TaskIcon';
+import type { Dispatch, SetStateAction } from 'react';
 
-export default function SideBar() {
-  const isActive =  true;
+interface SideBarProps {
+  activeScreen: number,
+  setActiveScreen: Dispatch<SetStateAction<number>>
+}
+
+export default function SideBar(props: SideBarProps) {
+  const { 
+    activeScreen = 0, 
+    setActiveScreen 
+  } = props;
 
   return (
-    <div class='h-[100vh] w-24 bg-gray-800 flex flex-col items-center space-y-10'>
+    <div class='h-[100vh] w-32 bg-gray-800 flex flex-col items-center space-y-10'>
       <div  data-tauri-drag-region class='w-full flex items-center h-16'>
         <Menu/>
       </div>
       {/* Avatar */}
       <img 
+        onClick={()=> {}}
         src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-        alt="User Avatar" className="w-14 h-14 rounded-full" 
+        alt="User Avatar" className="w-14 h-14 rounded-full cursor-pointer" 
       />
-      <div class='flex flex-col items-center justify-center'>
-        <div  className={clsx( isActive && "bg-muted" ,`w-14 h-14 rounded-md`)}>
-          <TaskIcon class={clsx(isActive ? `fill-white` : 'fill-muted' , 'p-2')}/>
+      <div class='flex flex-col items-center justify-center cursor-pointer' onClick={()=> setActiveScreen(0)}>
+        <div  className={clsx( activeScreen === 0 && "bg-muted" ,`w-14 h-14 rounded-md`)}>
+          <TaskIcon class={clsx(activeScreen === 0 ? `fill-white` : 'fill-muted' , 'p-2')}/>
         </div>
-        <p class={clsx(isActive && 'text-white' , 'text-muted')}>Tasks</p>
+        <p class={clsx(activeScreen === 0 && 'text-white' , 'text-muted')}>Tasks</p>
       </div>
-      <div class='flex flex-col items-center justify-center'>
-        <div className={clsx( isActive && "bg-muted" ,`w-14 h-14 rounded-md`)}>
-          <Setting class={clsx(isActive ? `fill-white` : 'fill-muted' , 'p-2')}/>
+      <div class='flex flex-col items-center justify-center cursor-pointer' onClick={()=> setActiveScreen(1)}>
+        <div className={clsx( activeScreen === 1 && "bg-muted" ,`w-14 h-14 rounded-md`)}>
+          <Setting class={clsx(activeScreen === 1 ? `fill-white` : 'fill-muted' , 'p-2')}/>
         </div>
-        <p class={clsx(isActive && 'text-white' , 'text-muted')}>Settings</p>
+        <p class={clsx(activeScreen === 1 && 'text-white' , 'text-muted')}>Settings</p>
       </div>
     </div>
   )

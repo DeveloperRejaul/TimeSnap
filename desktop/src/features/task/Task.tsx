@@ -1,5 +1,5 @@
 export default function Task() {
   return (
-    <div>Task</div>
+    <div className="flex flex-1">Task</div>
   )
 }
