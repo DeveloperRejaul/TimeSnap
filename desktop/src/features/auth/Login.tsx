@@ -89,7 +89,7 @@ export default function Login() {
             <input
               {...register('remember')}
               type="checkbox"
-              className="form-checkbox h-4 w-4 text-primary rounded"
+              className="form-checkbox h-4 w-4 rounded"
               defaultChecked
             />
             <span class="text-muted text-xs">Remember me</span>

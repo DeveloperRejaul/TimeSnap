@@ -6,7 +6,7 @@ import type { ISetupFormTypes } from "@/types"
 import clsx from "clsx"
 import { useEffect } from "react"
 import {useForm } from "react-hook-form"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { toast } from "react-toastify"
 
 export default function Setting() {
@@ -33,6 +33,10 @@ export default function Setting() {
       }
     })()
   }, [])
+
+  const {pathname} = useLocation()
+
+  console.log(location);
   
 
   const isBaseUrlShow = watch("isBaseUrlShow")
@@ -86,7 +90,7 @@ export default function Setting() {
         </div>
       </div>
       <div class="space-x-3 self-end">
-        <Button text="Back" onClick={()=>navigate(-1)}/>
+        {pathname === "/settings" && <Button text="Back" onClick={()=>navigate(-1)}/>}
         <Button text="Save Changes" onClick={handleSubmit(onSubmit)} isLoading={isSaving}/>
       </div>
     </form>
