@@ -19,5 +19,12 @@
     "editor.formatOnSave": true,
     "cSpell.words": [
         "actualy"
+    ],
+
+    "tailwindCSS.includeLanguages": {
+        "rust": "html"
+    },
+    "tailwindCSS.experimental.classRegex": [
+       ["class: \"([^\"]*)\""]
     ]
 }

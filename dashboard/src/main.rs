@@ -20,9 +20,6 @@ fn App() -> Element {
 #[component]
 pub fn Hero() -> Element {
     rsx! {
-        h1 {    
-            class: "text-5xl font-bold text-center mt-20 text-red-500",
-            "Welcome to TimeSnap" 
-        }
+        h1 { class: "text-5xl font-bold text-center mt-20 text-red-500", "Welcome to TimeSnap" }
     }
 }
