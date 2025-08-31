@@ -37,37 +37,37 @@ services:
       - pgadmin
     ports:
       - "3001:3001"
-  server2:
-    container_name: server2
-    environment:
-      - JWT_SECRET_KEY=MY_SECRET_KEY
-      - PORT=3002
+  # server2:
+  #   container_name: server2
+  #   environment:
+  #     - JWT_SECRET_KEY=MY_SECRET_KEY
+  #     - PORT=3002
 
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    restart: "always"
-    depends_on:
-      - db
-      - pgadmin
-    ports:
-      - "3002:3002"
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   restart: "always"
+  #   depends_on:
+  #     - db
+  #     - pgadmin
+  #   ports:
+  #     - "3002:3002"
       
-  server3:
-    container_name: server3
-    environment:
-      - JWT_SECRET_KEY=MY_SECRET_KEY
-      - PORT=3003
+  # server3:
+  #   container_name: server3
+  #   environment:
+  #     - JWT_SECRET_KEY=MY_SECRET_KEY
+  #     - PORT=3003
 
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    restart: "always"
-    depends_on:
-      - db
-      - pgadmin
-    ports:
-      - "3003:3003"
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   restart: "always"
+  #   depends_on:
+  #     - db
+  #     - pgadmin
+  #   ports:
+  #     - "3003:3003"
     # volumes:
     #   - ./server/src:/app/src
     #   - ./server/upload:/app/upload
