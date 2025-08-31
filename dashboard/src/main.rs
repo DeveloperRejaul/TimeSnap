@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
-const MAIN_CSS: Asset = asset!("/assets/main.css");
+const TAILWIND_CSS: Asset = asset!("/assets/output.css");
 // const HEADER_SVG: Asset = asset!("/assets/header.svg");
 
 fn main() {
@@ -12,15 +12,17 @@ fn main() {
 fn App() -> Element {
     rsx! {
         document::Link { rel: "icon", href: FAVICON }
-        document::Link { rel: "stylesheet", href: MAIN_CSS }
+        document::Link { rel: "stylesheet", href: TAILWIND_CSS }
         Hero {}
-
     }
 }
 
 #[component]
 pub fn Hero() -> Element {
     rsx! {
-       h1 { "Welcome to TimeSnap" }
+        h1 {    
+            class: "text-5xl font-bold text-center mt-20 text-red-500",
+            "Welcome to TimeSnap" 
+        }
     }
 }
