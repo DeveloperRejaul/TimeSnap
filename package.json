@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/DeveloperRejaul/TimeSnap/issues"
   },
-  "homepage": "https://github.com/DeveloperRejaul/TimeSnap#readme"
+  "homepage": "https://github.com/DeveloperRejaul/TimeSnap#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
 }
