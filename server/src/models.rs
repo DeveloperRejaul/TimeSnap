@@ -18,4 +18,5 @@ pub struct Claims {
 #[derive(Debug, Clone, Deserialize)]
 pub struct EnvAppConfig {
     pub jwt_secret: String,
+    pub port: String,
 }

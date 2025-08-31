@@ -1,0 +1,89 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name:  pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
+
+  server:
+    container_name: server
+    environment:
+      - JWT_SECRET_KEY=MY_SECRET_KEY
+      - PORT=3001
+
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: "always"
+    depends_on:
+      - db
+      - pgadmin
+    ports:
+      - "3001:3001"
+  # server2:
+  #   container_name: server2
+  #   environment:
+  #     - JWT_SECRET_KEY=MY_SECRET_KEY
+  #     - PORT=3002
+
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   restart: "always"
+  #   depends_on:
+  #     - db
+  #     - pgadmin
+  #   ports:
+  #     - "3002:3002"
+      
+  # server3:
+  #   container_name: server3
+  #   environment:
+  #     - JWT_SECRET_KEY=MY_SECRET_KEY
+  #     - PORT=3003
+
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   restart: "always"
+  #   depends_on:
+  #     - db
+  #     - pgadmin
+  #   ports:
+  #     - "3003:3003"
+    # volumes:
+    #   - ./server/src:/app/src
+    #   - ./server/upload:/app/upload
+    #   - ./server/static:/app/static
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    restart: always
+    volumes:
+      - ./nginx/nginx-selfsigned.crt:/etc/nginx/ssl/nginx-selfsigned.crt
+      - ./nginx/nginx-selfsigned.key:/etc/nginx/ssl/nginx-selfsigned.key
+    depends_on:
+      - server
