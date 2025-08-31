@@ -10,8 +10,9 @@ use futures_util::stream::StreamExt as _;
 
 // main / routes
 #[get("/")]
-pub async fn root() -> impl Responder {
-     HttpResponse::Ok().body("server is running")
+pub async fn root(config: web::Data<EnvAppConfig>) -> impl Responder {
+    println!("Root endpoint hit: {}", config.port);
+    HttpResponse::Ok().body("server is running")
 }
 
 #[get("/auth/forgotpass")]

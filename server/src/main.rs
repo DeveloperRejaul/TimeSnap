@@ -18,17 +18,31 @@ async fn main() -> std::io::Result<()> {
 
     // setup env
     dotenv().ok();
-    // logger setup
-    env_logger::init_from_env(Env::default().default_filter_or("info"));
-
-    let host = "0.0.0.0";
-    let port = 8080;
-    println!("Server running on http://{}:{}", host, port);
 
     let config = EnvAppConfig {
-        jwt_secret:utils::get_env_var("JWT_SECRET_KEY")
+        jwt_secret:utils::get_env_var("JWT_SECRET_KEY"),
+        port:utils::get_env_var("PORT"),
     };
+
+    let host = "0.0.0.0";
+    let port = config.port.parse().expect("PORT must be a valid u16");
+
+
+    // ensure all env is exists 
+
+    if config.jwt_secret.is_empty() || config.port.is_empty() {
+        eprintln!("Error: One or more required environment variables are missing.");
+        std::process::exit(1);
+    }
+
+    println!("Server running on http://{}:{}", host, port);
+
+   
     create_dir_all("uploads")?;
+
+
+    // logger setup
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
 
     HttpServer::new(move || {        
         App::new()
