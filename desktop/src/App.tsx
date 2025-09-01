@@ -4,6 +4,8 @@ import AppProvider from "./core/context/AppProvider";
 import { Provider } from "react-redux";
 import { store } from "./core/rtk/store";
 import Toast from "./core/components/Toast";
+import 'react-circular-progressbar/dist/styles.css';
+
 
 export default function App() {
   return (
