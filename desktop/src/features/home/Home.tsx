@@ -8,7 +8,7 @@ import Setting from "../settings/Setting"
 import Play from "@/core/icons/play"
 import Pause from "@/core/icons/pause"
 import clsx from "clsx"
-
+import { CircularProgressbar } from 'react-circular-progressbar';
 
 let intervalId: NodeJS.Timeout | null = null
 
@@ -60,7 +60,7 @@ export default function Home() {
           {activeScreen === 0 ? <Task/> : <Setting />}
 
           {/* Home main content */}
-          <form class="flex flex-1 flex-col space-y-4"> 
+          <form class="flex flex-1 flex-col space-y-5"> 
             <h1> What are you working on?</h1>
             <select class="w-full">
               <option selected>Choose a country</option>
@@ -78,7 +78,7 @@ export default function Home() {
             </select>
 
             {/* timer */}
-            <div class="flex justify-center items-center border rounded-md border-primary space-x-5">
+            <div class="flex justify-center items-center border rounded-md border-primary space-x-5 shadow-md ">
               <h1 class="text-5xl font-bold py-10">00:00<span class="text-xl text-muted font-normal">00</span></h1>
               <div class={clsx("h-14 w-14 rounded-2xl flex justify-center items-center cursor-pointer", isPlaying ? "bg-danger": "bg-primary")} onClick={handleTimer}>
                 {isPlaying ? <Pause class="h-6 w-6 fill-white"/> : <Play class="h-6 w-6 fill-white"/>}
@@ -86,7 +86,26 @@ export default function Home() {
             </div>
 
             {/* history */}
-
+            <div class="shadow-[0_0_6px_rgba(0,0,0,0.15)] rounded-md">
+              <div class="p-6 border-b border-b-border/40 flex justify-between items-center">
+                <div>
+                  <h1 class="font-semibold text-muted">Today</h1>
+                  <h2 class="font-bold">00<span class="text-muted font-normal text-xs">h</span> 00<span class="text-muted font-normal text-xs">m</span></h2>
+                </div>
+                <div class="h-14 w-14">
+                  <CircularProgressbar value={50} maxValue={100} text={`${0}%`} />;
+                </div>
+              </div>
+              <div class="p-6 border-b border-b-border/40 flex justify-between items-center">
+                <div>
+                  <h1 class="font-semibold text-muted">Today</h1>
+                  <h2 class="font-bold">00<span class="text-muted font-normal text-xs">h</span> 00<span class="text-muted font-normal text-xs">m</span></h2>
+                </div>
+                <div class="h-14 w-14">
+                  <CircularProgressbar value={50} maxValue={100} text={`${0}%`} />;
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

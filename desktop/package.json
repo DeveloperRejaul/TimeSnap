@@ -19,6 +19,7 @@
     "@tauri-apps/plugin-store": "^2.4.0",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
+    "react-circular-progressbar": "^2.2.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.62.0",
     "react-redux": "^9.2.0",
