@@ -38,7 +38,7 @@ export default function Timer() {
   };
 
   return (
-    <div class="flex justify-center items-center border rounded-md border-primary space-x-5 shadow-md ">
+    <div class="flex justify-center items-center border rounded-md border-primary/50 space-x-5 shadow-md ">
       <h1 class="text-5xl font-bold py-10">{formatTime(time)[0]}:{formatTime(time)[1]}<span class="text-xl text-muted font-normal">{formatTime(time)[2]}</span></h1>
       <div class={clsx("h-14 w-14 rounded-2xl flex justify-center items-center cursor-pointer", isPlaying ? "bg-danger": "bg-primary")} onClick={handleTimer}>
         {isPlaying ? <Pause class="h-6 w-6 fill-white"/> : <Play class="h-6 w-6 fill-white"/>}

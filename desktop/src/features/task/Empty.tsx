@@ -15,7 +15,10 @@ export default function Empty(props:IEmptyProps) {
       {status === "todo" && (
         <>
           <p class='text-muted text-sm'>You are not assigned to any task</p>
-          <Button text='Create a new task' variant='outline' size='sm'/>
+          <Button variant='outline' size='sm'>
+            <span class='px-1 text-xl'>+</span>
+            Create a new task
+          </Button>
         </>
       )}
     </div>

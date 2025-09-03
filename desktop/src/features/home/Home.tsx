@@ -7,6 +7,7 @@ import Task from "../task/Task"
 import Setting from "../settings/Setting"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import Timer from "./Timer"
+import Selector from "./Selector"
 
 let intervalId: NodeJS.Timeout | null = null
 
@@ -36,7 +37,7 @@ export default function Home() {
         } catch (error) {
           console.log(error);
         }
-      }, 60000); 
+      }, 10000); 
     }
   },[])
 
@@ -57,21 +58,24 @@ export default function Home() {
           {/* Home main content */}
           <form class="flex flex-1 flex-col space-y-5"> 
             <h1> What are you working on?</h1>
-            <select class="w-full">
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-            </select>
-            <select class="w-full">
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-            </select>
-
+            <Selector 
+              placeholder="Select department"
+              data={[
+                "Development",
+                "UI/UX",
+                "HR",
+                "Administration",
+              ]}
+            />
+            <Selector 
+              placeholder="Select task"
+              data={[
+                "Task 01",
+                "Task 02",
+                "Task 03",
+                "Task 04",
+              ]}
+            />
             {/* timer */}
             <Timer/>
             {/* history */}
