@@ -13,7 +13,7 @@ export default function Button(props: IButtonProps) {
     text,
   } = props;
 
-  const base = 'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-200';
+  const base = 'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-200 cursor-pointer';
 
   const sizes = {
     sm: 'text-sm px-3 py-1',
@@ -23,10 +23,11 @@ export default function Button(props: IButtonProps) {
 
   const variants = {
     primary: 'bg-primary text-primary-foreground hover:brightness-110',
-    secondary: 'bg-secondary text--secondary-foreground] hover:brightness-110',
-    accent: 'bg-accent text-accent-foreground] hover:brightness-110',
+    secondary: 'bg-secondary text--secondary-foreground hover:brightness-110',
+    accent: 'bg-accent text-accent-foreground hover:brightness-110',
     danger: 'bg-text-danger text-white hover:brightness-110',
-  }[variant];
+    outline:"border border-primary/70 hover:brightness-110 text-primary/70"
+  }[variant]
 
   const disabledClasses = isLoading? 'opacity-50 cursor-not-allowed pointer-events-none': 'cursor-pointer';
 

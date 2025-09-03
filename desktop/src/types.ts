@@ -21,7 +21,7 @@ export interface IButtonProps {
     onClick?: () => void;
     className?: string;
     type?: 'button' | 'submit' | 'reset';
-    variant?: 'primary' | 'secondary' | 'danger';
+    variant?: 'primary' | 'secondary' | 'danger'| 'outline';
     size?: 'sm' | 'md' | 'lg';
     isLoading?: boolean;
 }
