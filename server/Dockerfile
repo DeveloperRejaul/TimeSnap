@@ -11,4 +11,4 @@ COPY ./static /app/static
 RUN cargo build --release
 
 EXPOSE 3001
-CMD ["cargo", "run"]
+CMD ["/app/target/release/time-snap"]
