@@ -3,15 +3,16 @@ import Input from "@/core/components/Input";
 import { useApp } from "@/core/hooks/useApp";
 import type { ISignupFormTypes } from "@/types";
 import { openUrl } from '@tauri-apps/plugin-opener';
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "./api";
 import { toast } from "react-toastify";
-
+import Checkbox from "@/core/components/checkbox";
+import { useForm } from "react-hook-form";
+  
 
 export default function Login() {
   const navigate = useNavigate();
-  const {handleSubmit, register, formState:{errors}} = useForm<ISignupFormTypes>()
+  const {handleSubmit, register, setValue,formState:{errors}} = useForm<ISignupFormTypes>()
   const {getStore, setStore} = useApp()
   const [login, {isLoading}] = useLoginMutation()
   
@@ -86,12 +87,10 @@ export default function Login() {
         <div className="flex items-center justify-between text-sm text-gray-700">
           {/* Remember Me */}
           <label className="flex items-center space-x-2">
-            <input
-              {...register('remember')}
-              type="checkbox"
-              className="form-checkbox h-4 w-4 rounded"
-              defaultChecked
-            />
+            <Checkbox 
+              onCheck={(value)=>{
+                setValue('remember', value)
+              }}/>
             <span class="text-muted text-xs">Remember me</span>
           </label>
 
