@@ -1,94 +1,52 @@
-# Time-Snap — Employee/Device Monitor/Time tracker Desktop App
+# ⏱️ TimeSnap — Employee & Device Monitoring / Time Tracking Desktop App
 
-An open-source desktop monitoring application inspired by tools like **Apploye**. This app is designed to be easily integrated with your own backend server, making it fully customizable and developer-friendly.
+**TimeSnap** is an open-source desktop monitoring and productivity tracking application inspired by tools like **Apploye**.  
+Built on **Tauri** for lightweight native performance, TimeSnap integrates seamlessly with your own backend server — giving you full control, customization, and developer-friendly flexibility.
 
-Built using **Tauri** for the desktop client and an example backend written in **Rust**.
+![TimeSnap Screenshot](./screenshot/image.png)
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-* Open-source and fully extensible
-* Backend-agnostic (easily connect your own server)
-* Built with Tauri for native performance
-* Simple and clean user interface
-* Secure login with email and password
-* Forgot Password and Signup redirects
+- 🔌 **Backend-agnostic** — easily connect with your own server  
+- ⚡ **Lightweight & Native** — powered by [Tauri](https://tauri.app/) for cross-platform speed  
+- 🔐 **Secure Authentication** — login with email & password, plus signup and password reset flows  
+- ✅ **Task Management** — create, assign, and track progress on tasks  
+- 📸 **Screenshot Monitoring** — automatic and manual screen captures for accountability  
+- ⌨️ **Activity Tracking** — keyboard strokes, mouse clicks, and idle detection (with on/off control)  
+- 📊 **Progress Reports** — visualize task completion and employee productivity  
+- 🎨 **Clean & Simple UI** — modern, distraction-free design  
+- 🔧 **Fully Extensible** — developer-friendly, open-source, and customizable  
+
+---
+
+## 📥 Download
+
+TimeSnap is available for **Windows**, **macOS**, and **Linux**.  
+You can always grab the **latest release** from our GitHub page:
+
+👉 [Download the latest version](https://github.com//DeveloperRejaul/TimeSnap/releases/latest)
+
+---
+
+## 🚀 Getting Started
+
+1. **Download & Install** from the [latest release](https://github.com//DeveloperRejaul/TimeSnap/releases/latest).  
+2. **Connect to Your Server** (or use the example Rust backend provided).  
+3. **Login & Start Tracking** — begin monitoring tasks, screenshots, and activity logs.  
+
 
 ---
 
 ## 📁 Project Structure Overview
 
 ```
-├── desktop/                 # Tauri-based desktop client application
-├── server/                 # Sample backend in Rust (for reference)
-└── README.md               # You're here
+├── desktop/    # Tauri-based desktop client application
+├── server/     # Sample backend in Rust (for reference)
+├── dashboard/  # Sample Dashboard in Rust under development
+└── README.md   # You're here
 ```
-
----
-
-## ⚙️ Getting Started
-
-### Prerequisites
-
-* Rust (for building the backend example)
-* Node.js / Tauri CLI (for building the desktop app)
-
-
-## 🛠️ Configuration
-
-On first launch, Time-Snap will ask for your backend **Base URL**:
-
-```
-https://yourserver.com
-```
-
-After entering the Base URL and clicking **Next**, you'll be redirected to the **Login Screen**.
-
----
-
-## 🔑 Authentication Flow
-
-### Login
-
-* Endpoint: `baseUrl/auth/login`
-* Method: `POST`
-* Payload:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "yourpassword"
-}
-```
-
-### Forgot Password
-
-* Opens in browser:
-
-```
-baseUrl/auth/forgotpass
-```
-
-### Sign Up
-
-* Opens in browser:
-
-```
-baseUrl/auth/signup
-```
-
----
-
-## 🚀 Example Backend
-
-A working example of the backend integration written in **Rust** is available in:
-
-```
-server/
-```
-
-This helps you understand the expected API structure and response formats.
 
 ---
 

@@ -27,7 +27,6 @@ services:
     environment:
       - JWT_SECRET_KEY=MY_SECRET_KEY
       - PORT=3001
-
     build:
       context: ./server
       dockerfile: Dockerfile

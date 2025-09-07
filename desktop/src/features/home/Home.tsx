@@ -86,7 +86,7 @@ export default function Home() {
                   <h2 class="font-bold">00<span class="text-muted font-normal text-xs">h</span> 00<span class="text-muted font-normal text-xs">m</span></h2>
                 </div>
                 <div class="h-14 w-14">
-                  <CircularProgressbar value={50} maxValue={100} text={`${0}%`} />
+                  <CircularProgressbar value={0} maxValue={100} text={`${0}%`} />
                 </div>
               </div>
               <div class="p-6 border-b border-b-border/40 flex justify-between items-center">
