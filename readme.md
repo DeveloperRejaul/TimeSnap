@@ -79,7 +79,7 @@ This project is licensed under the **MIT License**. Feel free to use and modify 
 
 ## 📍 Credits
 
-Built with love using **Tauri** and **Rust** by \[Your Name / Organization]
+Built with love using **Tauri** and **Rust** by Rezaul karim
 
 ---
 
